@@ -1,0 +1,26 @@
+{
+  "name"       : "kangourouge/calendar-bundle",
+  "description": "Kangourouge calendar bundle",
+  "type"       : "symfony-bundle",
+  "license"    : "MIT",
+  "authors"    : [
+    {
+      "name" : "Chafiq El Mechrafi",
+      "email": "chafiq.elmechrafi@gmail.com"
+    },
+    {
+      "name" : "Arthur Miniconi",
+      "email": "aminiconi@kangourouge.com"
+    }
+  ],
+  "require"    : {
+    "php"            : ">=7",
+    "symfony/symfony": "2.8.*"
+  },
+  "autoload"   : {
+    "psr-0": {
+      "KRG\\CalendarBundle": ""
+    }
+  },
+  "target-dir" : "KRG/CalendarBundle"
+}

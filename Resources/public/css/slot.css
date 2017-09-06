@@ -1,0 +1,29 @@
+.opening-form {
+    display: flex;
+    width: 40%;
+}
+.opening-form label {
+    width: 100px;
+    display: inline-table;
+}
+.opening-form select {
+    margin: 0 5px;
+    width: 80px;
+    float: right;
+}
+.opening-form:nth-child(odd) {
+    float: left;
+    padding: 0 30px;
+    width: 60%;
+}
+.opening-form .form-group.has-error select + .help-block {
+    display: none;
+    background: #FFFFFF;
+    position: absolute;
+    top: 35px;
+    width: 150px;
+    z-index: 2;
+}
+.opening-form .form-group.has-error select:hover + .help-block {
+    display: block;
+}

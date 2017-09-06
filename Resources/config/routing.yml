@@ -1,0 +1,7 @@
+krg_calendar_homepage:
+    path:     /
+    defaults: { _controller: KRGCalendarBundle:Default:index }
+
+krg_calendar_appointment_update:
+    path:     /appointment/update/{id}
+    defaults: { _controller: KRGCalendarBundle:Appointment:update }
