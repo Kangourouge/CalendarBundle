@@ -5,6 +5,7 @@ namespace KRG\CalendarBundle\Form\Type;
 use KRG\CalendarBundle\Form\DataTransformer\SlotRangeDataTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormView;
@@ -17,8 +18,8 @@ class SlotRangeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('day', 'hidden')
-            ->add('meridiem', 'hidden');
+            ->add('day', HiddenType::class)
+            ->add('meridiem', HiddenType::class);
 
         $builder->addEventListener(FormEvents::POST_SET_DATA, array($this, 'onPostSetData'));
     }
@@ -51,8 +52,6 @@ class SlotRangeType extends AbstractType
         return 'slot_range';
     }
 
-    /* EVENTS */
-
     public function onPostSetData(FormEvent $event)
     {
         $form = $event->getForm();
@@ -61,22 +60,18 @@ class SlotRangeType extends AbstractType
 
         $form
             ->add('start', ChoiceType::class, array(
-                'choices'           => $choices,
-                'choices_as_values' => true,
-                'required'          => false,
-                'label'             => false,
-                'placeholder'       => 'form.range.start',
+                'choices'     => $choices,
+                'required'    => false,
+                'label'       => false,
+                'placeholder' => 'form.range.start',
             ))
             ->add('end', ChoiceType::class, array(
-                'choices'           => $choices,
-                'choices_as_values' => true,
-                'required'          => false,
-                'label'             => false,
-                'placeholder'       => 'form.range.end',
+                'choices'     => $choices,
+                'required'    => false,
+                'label'       => false,
+                'placeholder' => 'form.range.end',
             ));
     }
-
-    /* */
 
     private static function getChoices($meridiem)
     {
