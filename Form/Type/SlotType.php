@@ -23,17 +23,6 @@ class SlotType extends AbstractType
      */
     protected $entityManager;
 
-    protected $durationChoices = array(
-        '15'  => '15m',
-        '30'  => '30m',
-        '45'  => '45m',
-        '60'  => '1h',
-        '75'  => '1h15',
-        '90'  => '1h30',
-        '105' => '1h45',
-        '120' => '2h',
-    );
-
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
@@ -60,14 +49,14 @@ class SlotType extends AbstractType
                     'class'            => 'datepicker',
                 ),
             ))
-            ->add('range', CollectionType::class, array(
+            ->add('range', SlotRangeCollectionType::class, array(
                 'entry_type' => SlotRangeType::class,
                 'mapped'     => false,
                 'label'      => false
             ))
             ->add('duration', ChoiceType::class, array(
                 'required' => true,
-                'choices'  => $this->durationChoices
+                'choices'  => static::getDurationChoices(new \DateInterval($options['duration_interval']), new \DateInterval($options['duration_max_interval']))
             ))
             ->add('capacity', IntegerType::class)
         ;
@@ -81,15 +70,12 @@ class SlotType extends AbstractType
         $className = $this->entityManager->getClassMetadata(SlotInterface::class)->getName();
 
         $resolver->setDefaults(array(
-            'data_class'         => $className,
-            'label_format'       => 'form.slot.%name%',
-            'cascade_validation' => true,
+            'data_class'        => $className,
+            'label_format'      => 'form.slot.%name%',
+            'duration_interval' => 'PT15M',
+            'duration_max_interval' => 'PT2H',
+            'cascade_validation'=> true,
         ));
-    }
-
-    public function getName()
-    {
-        return 'slot';
     }
 
     public function onPostSetData(FormEvent $event)
@@ -108,6 +94,41 @@ class SlotType extends AbstractType
         $this->setRange($slot, $range);
 
         $event->setData($slot);
+    }
+
+    protected static function getDurationChoices(\DateInterval $interval, \DateInterval $maxInterval) {
+        $startAt = new \DateTime();
+        $endAt = clone $startAt;
+
+        $endAt->add($maxInterval);
+
+        $period = new \DatePeriod($startAt, $interval, $endAt);
+
+        $choices = [];
+
+        foreach($period as $idx => $datetime) {
+
+            $diff = $startAt->diff($datetime);
+            $intervals = ['y' => ['Y', 'year(s)'], 'm' => ['M' => 'month(s)'], 'd' => ['D', 'day(s)'], 'h' => ['TH', 'h'], 'i' => ['TM', 'min'], 's' => ['TS', 's']];
+
+            $choice = $label = '';
+            foreach($intervals as $key => $value) {
+                if ($diff->{ $key } === 0) {
+                    continue;
+                }
+                $choice .= sprintf('%d%s', $diff->{ $key }, $value[0]);
+                $label .= sprintf(' %d%s', $diff->{ $key }, $value[1]);
+            }
+            unset($value);
+
+            if (strlen($choice) === 0) {
+                continue;
+            }
+
+            $choices[ 'P' . $choice ] = $label;
+        }
+
+        return $choices;
     }
 
     private function getRange(Slot $slot = null)
@@ -147,11 +168,8 @@ class SlotType extends AbstractType
         $slot->setRange($range);
     }
 
-    /**
-     * @param EntityManagerInterface $entityManager
-     */
-    public function setEntityManager(EntityManagerInterface $entityManager)
+    public function getName()
     {
-        $this->entityManager = $entityManager;
+        return 'slot';
     }
 }

@@ -1,33 +1,24 @@
 {% block slot_widget %}
     {% spaceless %}
         <div class="row">
-            <div class="col-xs-12 col-sm-6" style="border: 1px solid #efefef">
+            <div class="col-xs-12 col-sm-6">
                 <div role="range" data-start="{{ form.startAt.vars.id }}" data-end="{{ form.endAt.vars.id }}" data-container="{{ form.range.vars.id }}">
                     <div class="row">
                         <div class="col-xs-12">
                             {{ form_row(form.event) }}
                         </div>
-                    </div>
-
-                    <div class="row">
                         <div class="col-xs-12 col-sm-6">
                             {{ form_row(form.startAt) }}
                         </div>
                         <div class="col-xs-12 col-sm-6">
                             {{ form_row(form.endAt) }}
                         </div>
-                    </div>
-
-                    <div class="row">
                         <div class="col-xs-12 col-sm-6">
                             {{ form_row(form.duration) }}
                         </div>
                         <div class="col-xs-12 col-sm-6">
                             {{ form_row(form.capacity) }}
                         </div>
-                    </div>
-
-                    <div class="row">
                         <div class="col-xs-12">
                             {{ form_row(form.range) }}
                         </div>
@@ -38,6 +29,19 @@
     {% endspaceless %}
 {% endblock slot_widget %}
 
-{% block slot_range_row %}
-    {{ form_widget(form) }}
-{% endblock %}
+{% block range_collection_widget %}
+    {% spaceless %}
+        <div class="slot-range">
+            {% for child in form %}
+                <div class="slot">
+                    {% if loop.index % 2 == 1 %}
+                        <label>{{ child.vars.day }}</label>
+                    {% endif %}
+                    {% for _child in child %}
+                        {{- form_widget(_child) -}}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endspaceless %}
+{% endblock range_collection_widget %}

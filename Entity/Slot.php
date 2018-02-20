@@ -267,7 +267,11 @@ abstract class Slot implements SlotInterface
                 $startAt = \DateTime::createFromFormat('H:i', $_data['start']);
                 $endAt = \DateTime::createFromFormat('H:i', $_data['end']);
 
-                $week[$day % 7] = $this->getPeriod($startAt, $endAt, $interval);
+                if (!isset($week[$day % 7])) {
+                    $week[$day % 7] = [];
+                }
+
+                $week[$day % 7] = array_merge($week[$day % 7], $this->getPeriod($startAt, $endAt, $interval));
             }
         }
 

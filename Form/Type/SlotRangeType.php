@@ -24,18 +24,13 @@ class SlotRangeType extends AbstractType
         $builder->addEventListener(FormEvents::POST_SET_DATA, array($this, 'onPostSetData'));
     }
 
-    public function finishView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        parent::finishView($view, $form, $options);
+        parent::buildView($view, $form, $options);
 
         $day = ceil(((int)$view->vars['name'] + 1) / 2) % 7;
-        $view->vars['attr']['class'] = sprintf('inline-form opening-form range-%d', $day);
-        foreach ($view->children as $name => &$children) {
-            if ($name === 'start' && $view->children['meridiem']->vars['value'] === 'am') {
-                $children->vars['label'] = 'form.range.'.$day;
-            }
-            $children->vars['widget_only'] = true;
-        }
+
+        $view->vars['day'] = date('l', strtotime(sprintf("Sunday +%s days", $day)));
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -52,6 +47,8 @@ class SlotRangeType extends AbstractType
         return 'slot_range';
     }
 
+    /* EVENTS */
+
     public function onPostSetData(FormEvent $event)
     {
         $form = $event->getForm();
@@ -60,18 +57,22 @@ class SlotRangeType extends AbstractType
 
         $form
             ->add('start', ChoiceType::class, array(
-                'choices'     => $choices,
-                'required'    => false,
-                'label'       => false,
-                'placeholder' => 'form.range.start',
+                'choices'           => $choices,
+                'choices_as_values' => true,
+                'required'          => false,
+                'label'             => false,
+                'placeholder'       => 'form.range.start',
             ))
             ->add('end', ChoiceType::class, array(
-                'choices'     => $choices,
-                'required'    => false,
-                'label'       => false,
-                'placeholder' => 'form.range.end',
+                'choices'           => $choices,
+                'choices_as_values' => true,
+                'required'          => false,
+                'label'             => false,
+                'placeholder'       => 'form.range.end',
             ));
     }
+
+    /* */
 
     private static function getChoices($meridiem)
     {
