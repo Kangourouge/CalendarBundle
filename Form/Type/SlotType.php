@@ -109,15 +109,15 @@ class SlotType extends AbstractType
         foreach($period as $idx => $datetime) {
 
             $diff = $startAt->diff($datetime);
-            $intervals = ['y' => ['Y', 'year(s)'], 'm' => ['M' => 'month(s)'], 'd' => ['D', 'day(s)'], 'h' => ['TH', 'h'], 'i' => ['TM', 'min'], 's' => ['TS', 's']];
+            $intervals = ['y' => ['%dY', '%d year(s)'], 'm' => ['%dM' => '%d month(s)'], 'd' => ['%dD', '%d day(s)'], 'h' => ['T%dH', '%dh'], 'i' => ['T%dM', '%d min'], 's' => ['T%dS', '%ds']];
 
             $choice = $label = '';
             foreach($intervals as $key => $value) {
                 if ($diff->{ $key } === 0) {
                     continue;
                 }
-                $choice .= sprintf('%d%s', $diff->{ $key }, $value[0]);
-                $label .= sprintf(' %d%s', $diff->{ $key }, $value[1]);
+                $choice .= sprintf($value[0], $diff->{ $key });
+                $label .= sprintf(' ' . $value[1], $diff->{ $key });
             }
             unset($value);
 

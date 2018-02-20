@@ -45,8 +45,7 @@ abstract class Slot implements SlotInterface
     protected $endAt;
 
     /**
-     * @ORM\Column(type="integer")
-     * @Assert\GreaterThan(0)
+     * @ORM\Column(type="string")
      */
     protected $duration;
 
@@ -78,7 +77,7 @@ abstract class Slot implements SlotInterface
     public function __construct()
     {
         $this->range = array();
-        $this->duration = 30;
+        $this->duration = 'PT30M';
         $this->capacity = 1;
         $this->excluded = false;
         $this->appointments = new ArrayCollection();
@@ -255,7 +254,7 @@ abstract class Slot implements SlotInterface
             return null;
         }
 
-        $interval = new \DateInterval(sprintf('PT%dM', $this->duration));
+        $interval = new \DateInterval($this->duration);
 
         $week = array();
         foreach ($this->range as $day => $data) {
