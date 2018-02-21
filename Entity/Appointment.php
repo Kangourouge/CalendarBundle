@@ -48,6 +48,12 @@ abstract class Appointment implements AppointmentInterface
     protected $attendedAt;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     * @var \DateTime
+     */
+    protected $notifiedAt;
+
+    /**
      * @ORM\Column(type="text", nullable=true)
      */
     protected $comment;
@@ -122,7 +128,7 @@ abstract class Appointment implements AppointmentInterface
      *
      * @return Appointment
      */
-    public function setAttendedAt(\DateTime $attendedAt)
+    public function setAttendedAt(\DateTime $attendedAt = null)
     {
         $this->attendedAt = $attendedAt;
 
@@ -137,6 +143,31 @@ abstract class Appointment implements AppointmentInterface
     public function getAttendedAt()
     {
         return $this->attendedAt;
+    }
+
+
+    /**
+     * Set notifiedAt
+     *
+     * @param \DateTime $notifiedAt
+     *
+     * @return Appointment
+     */
+    public function setNotifiedAt(\DateTime $notifiedAt = null)
+    {
+        $this->notifiedAt = $notifiedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get notifiedAt
+     *
+     * @return \DateTime
+     */
+    public function getNotifiedAt()
+    {
+        return $this->notifiedAt;
     }
 
     /**

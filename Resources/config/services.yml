@@ -30,3 +30,8 @@ services:
         arguments: [ '@doctrine.orm.entity_manager' ]
         tags:
             - { name: form.type }
+
+    KRG\CalendarBundle\Calendar\ICalGenerator:
+        class: KRG\CalendarBundle\Calendar\ICalGenerator
+        arguments: [ '@templating' ]
+

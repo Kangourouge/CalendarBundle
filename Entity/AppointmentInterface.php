@@ -43,7 +43,7 @@ interface AppointmentInterface
      *
      * @return Appointment
      */
-    public function setAttendedAt(\DateTime $attendedAt);
+    public function setAttendedAt(\DateTime $attendedAt = null);
 
     /**
      * Get attendedAt
@@ -51,6 +51,23 @@ interface AppointmentInterface
      * @return \DateTime
      */
     public function getAttendedAt();
+
+    /**
+     * Set notifiedAt
+     *
+     * @param \DateTime $notifiedAt
+     *
+     * @return Appointment
+     */
+    public function setNotifiedAt(\DateTime $notifiedAt = null);
+
+    /**
+     * Get notifiedAt
+     *
+     * @return \DateTime
+     */
+    public function getNotifiedAt();
+
 
     /**
      * Set comment
