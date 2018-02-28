@@ -2,6 +2,7 @@
 
 namespace KRG\CalendarBundle\Calendar;
 
+use AppBundle\Doctrine\DBAL\GenderEnum;
 use KRG\CalendarBundle\Entity\AppointmentInterface;
 use KRG\CalendarBundle\Entity\SlotInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -82,7 +83,7 @@ class Calendar
      *
      * @return array|Event|null
      */
-    public function getEvents(array $slots, array $appointments, $firstResult = false, $full = false)
+    public function getEvents(array $slots, array $appointments, $firstResult = false, $full = false, array $options = array())
     {
         $this->prepare($slots, $appointments);
 
@@ -99,7 +100,7 @@ class Calendar
 
             foreach ($periods as $period) {
                 list($startAt, $endAt) = $period;
-                if (($event = $this->createEvent($slot, $startAt, $endAt, $events, $slots, $full)) !== null) {
+                if (($event = $this->createEvent($slot, $startAt, $endAt, $events, $slots, $full, $options)) !== null) {
                     if ($firstResult) {
                         return $event;
                     }
@@ -169,9 +170,9 @@ class Calendar
      *
      * @return array|Event|null
      */
-    public function findEvents(array $filter, UserInterface $user = null, $full = false)
+    public function findEvents(array $filter, UserInterface $user = null, $full = false, array $options = array())
     {
-        return $this->getEvents($this->getSlots($filter, $user), $this->getAppointments($filter, $user), false, $full);
+        return $this->getEvents($this->getSlots($filter, $user), $this->getAppointments($filter, $user), false, $full, $options);
     }
 
     /**
@@ -195,13 +196,13 @@ class Calendar
      *
      * @return Event|null
      */
-    private function createEvent(SlotInterface $slot, \DateTime $startAt, \DateTime $endAt, array $events, array $slots, $full = false)
+    private function createEvent(SlotInterface $slot, \DateTime $startAt, \DateTime $endAt, array $events, array $slots, $full = false, array $options = array())
     {
         if (!$this->isValid($startAt, $endAt, $events, $slots)) {
             return null;
         }
 
-        if (($isFull = $this->isFull($slot, $startAt, $endAt)) && !$full) {
+        if (($isFull = $this->isFull($slot, $startAt, $endAt, $options)) && !$full) {
             return null;
         }
 
@@ -251,14 +252,44 @@ class Calendar
     }
 
     /**
+     * TODO: remove AppBundle dependency
      * @param SlotInterface $slot
      * @param \DateTime $startAt
      * @param \DateTime $endAt
      *
      * @return bool
      */
-    private function isFull(SlotInterface $slot, \DateTime $startAt, \DateTime $endAt)
+    private function isFull(SlotInterface $slot, \DateTime $startAt, \DateTime $endAt, array $options = array())
     {
+        $isFull = false;
+        if (isset($options['gender'])) {
+            // Slot max capacity limited by gender
+            // Ex: slot capacity = 8, max M = 8, max W = 4
+            // OK: 8M + 0W
+            // OK: 4M + 4W
+            // KO: 5M + 1W
+
+            $count[GenderEnum::MALE] = 0;
+            $count[GenderEnum::FEMALE] = 0;
+            /* @var $appointment \KRG\CalendarBundle\Entity\AppointmentInterface */
+            foreach ($slot->getAppointments() as $appointment) {
+                if ($appointment->isValid($startAt, $endAt) && null !== ($gender = $appointment->getUser()->getGender())) {
+                    $count[$gender]++;
+                }
+            }
+
+            $halfCapacity = (int)floor($slot->getCapacity() / 2);
+            $capacity[GenderEnum::MALE] = $count[GenderEnum::FEMALE] > 0 ? $slot->getCapacity() / 2 : $slot->getCapacity();
+            $capacity[GenderEnum::FEMALE] = $count[GenderEnum::MALE] > $halfCapacity ? 0 : $halfCapacity;
+            $total = $count[GenderEnum::MALE] + $count[GenderEnum::FEMALE];
+
+            $isFull = ($total >= $slot->getCapacity() || $count[$options['gender']] >= $capacity[$options['gender']]);
+
+            if ($isFull) {
+                return $isFull;
+            }
+        }
+
         return !$slot->isValid($startAt, $endAt);
     }
 }
