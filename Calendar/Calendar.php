@@ -273,8 +273,8 @@ class Calendar
             $count[GenderEnum::FEMALE] = 0;
             /* @var $appointment \KRG\CalendarBundle\Entity\AppointmentInterface */
             foreach ($slot->getAppointments() as $appointment) {
-                if ($appointment->isValid($startAt, $endAt) && null !== $appointment->getUser()) {
-                    $count[$appointment->getUser()->getGender()]++;
+                if ($appointment->isValid($startAt, $endAt) && null !== $appointment->getOrder()->getUser()) {
+                    $count[$appointment->getOrder()->getUser()->getGender()]++;
                 }
             }
 
