@@ -127,7 +127,6 @@ class Calendar
 
         $interval = new \DateInterval($week === null ? sprintf('PT%dM', $slot->getDuration()) : 'P1D');
         $endAt = clone $slot->getEndAt();
-        $endAt->add($interval); // Add 1 day to INCLUDE the last day
 
         $period = new \DatePeriod(max(new \DateTime(), $slot->getStartAt()), $interval, $endAt);
         $periods = array();
@@ -282,7 +281,6 @@ class Calendar
             $capacity[GenderEnum::MALE] = $count[GenderEnum::FEMALE] > 0 ? $slot->getCapacity() / 2 : $slot->getCapacity();
             $capacity[GenderEnum::FEMALE] = $count[GenderEnum::MALE] > $halfCapacity ? 0 : $halfCapacity;
             $total = $count[GenderEnum::MALE] + $count[GenderEnum::FEMALE];
-
             $isFull = ($total >= $slot->getCapacity() || $count[$options['gender']] >= $capacity[$options['gender']]);
 
             if ($isFull) {

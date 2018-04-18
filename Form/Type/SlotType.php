@@ -93,6 +93,10 @@ class SlotType extends AbstractType
         $range = $event->getForm()->get('range')->getData();
         $this->setRange($slot, $range);
 
+        $endAt = clone $slot->getEndAt();
+        $endAt->setTime(23, 59, 59);
+        $slot->setEndAt($endAt);
+
         $event->setData($slot);
     }
 
