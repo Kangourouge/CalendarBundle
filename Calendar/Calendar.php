@@ -52,9 +52,8 @@ class Calendar
     }
 
     /**
-     * @param array $filter
+     * @param array              $filter
      * @param UserInterface|null $user
-     *
      * @return array
      */
     public function getSlots(array $filter, UserInterface $user = null)
@@ -63,9 +62,8 @@ class Calendar
     }
 
     /**
-     * @param array $filter
-     * @param UserInterface $user
-     *
+     * @param array              $filter
+     * @param UserInterface|null $user
      * @return array
      */
     public function getAppointments(array $filter, UserInterface $user = null)
@@ -75,12 +73,11 @@ class Calendar
 
     /**
      * Browse each slot, make a sample from range and apply it to the events array
-     *
      * @param array $slots
      * @param array $appointments
-     * @param bool $firstResult
-     * @param bool $full
-     *
+     * @param bool  $firstResult
+     * @param bool  $full
+     * @param array $options
      * @return array|Event|null
      */
     public function getEvents(array $slots, array $appointments, $firstResult = false, $full = false, array $options = array())
@@ -118,8 +115,8 @@ class Calendar
 
     /**
      * @param SlotInterface $slot
-     *
      * @return array
+     * @throws \Exception
      */
     public function getSlotPeriods(SlotInterface $slot)
     {
@@ -163,10 +160,10 @@ class Calendar
     }
 
     /**
-     * @param array $filter
+     * @param array              $filter
      * @param UserInterface|null $user
-     * @param bool $full
-     *
+     * @param bool               $full
+     * @param array              $options
      * @return array|Event|null
      */
     public function findEvents(array $filter, UserInterface $user = null, $full = false, array $options = array())
@@ -174,12 +171,6 @@ class Calendar
         return $this->getEvents($this->getSlots($filter, $user), $this->getAppointments($filter, $user), false, $full, $options);
     }
 
-    /**
-     * @param array $filter
-     * @param UserInterface|null $user
-     *
-     * @return array|Event|null
-     */
     public function findOneEvent(array $filter, UserInterface $user = null)
     {
         return $this->getEvents($this->getSlots($filter, $user), $this->getAppointments($filter, $user), true);
@@ -187,15 +178,15 @@ class Calendar
 
     /**
      * @param SlotInterface $slot
-     * @param \DateTime $startAt
-     * @param \DateTime $endAt
-     * @param array $events
-     * @param array $slots
-     * @param bool $full
-     *
+     * @param \DateTime     $startAt
+     * @param \DateTime     $endAt
+     * @param array         $events
+     * @param array         $slots
+     * @param bool          $full
+     * @param array         $options
      * @return Event|null
      */
-    private function createEvent(SlotInterface $slot, \DateTime $startAt, \DateTime $endAt, array $events, array $slots, $full = false, array $options = array())
+    protected function createEvent(SlotInterface $slot, \DateTime $startAt, \DateTime $endAt, array $events, array $slots, $full = false, array $options = array())
     {
         if (!$this->isValid($startAt, $endAt, $events, $slots)) {
             return null;
@@ -218,13 +209,11 @@ class Calendar
     /**
      * @param \DateTime $startAt
      * @param \DateTime $endAt
-     * @param array $events
-     * @param array $slots
-     * @param array $appointments
-     *
+     * @param array     $events
+     * @param array     $slots
      * @return bool
      */
-    private function isValid(\DateTime $startAt, \DateTime $endAt, array $events, array $slots)
+    protected function isValid(\DateTime $startAt, \DateTime $endAt, array $events, array $slots)
     {
         // If it's today's slot, filter by time > now()
         if ($startAt < new \DateTime()) {
@@ -251,43 +240,14 @@ class Calendar
     }
 
     /**
-     * TODO: remove AppBundle dependency
      * @param SlotInterface $slot
-     * @param \DateTime $startAt
-     * @param \DateTime $endAt
-     *
+     * @param \DateTime     $startAt
+     * @param \DateTime     $endAt
+     * @param array         $options
      * @return bool
      */
-    private function isFull(SlotInterface $slot, \DateTime $startAt, \DateTime $endAt, array $options = array())
+    protected function isFull(SlotInterface $slot, \DateTime $startAt, \DateTime $endAt, array $options = array())
     {
-        $isFull = false;
-        if (isset($options['gender'])) {
-            // Slot max capacity limited by gender
-            // Ex: slot capacity = 8, max M = 8, max W = 4
-            // OK: 8M + 0W
-            // OK: 4M + 4W
-            // KO: 5M + 1W
-
-            $count[GenderEnum::MALE] = 0;
-            $count[GenderEnum::FEMALE] = 0;
-            /* @var $appointment \KRG\CalendarBundle\Entity\AppointmentInterface */
-            foreach ($slot->getAppointments() as $appointment) {
-                if ($appointment->isValid($startAt, $endAt) && null !== $appointment->getOrder()->getUser()) {
-                    $count[$appointment->getOrder()->getUser()->getGender()]++;
-                }
-            }
-
-            $halfCapacity = (int)floor($slot->getCapacity() / 2);
-            $capacity[GenderEnum::MALE] = $count[GenderEnum::FEMALE] > 0 ? $slot->getCapacity() / 2 : $slot->getCapacity();
-            $capacity[GenderEnum::FEMALE] = $count[GenderEnum::MALE] > $halfCapacity ? 0 : $halfCapacity;
-            $total = $count[GenderEnum::MALE] + $count[GenderEnum::FEMALE];
-            $isFull = ($total >= $slot->getCapacity() || $count[$options['gender']] >= $capacity[$options['gender']]);
-
-            if ($isFull) {
-                return $isFull;
-            }
-        }
-
         return !$slot->isValid($startAt, $endAt);
     }
 }
