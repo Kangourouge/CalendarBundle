@@ -3,7 +3,7 @@
 AppKernel
 ---------
 
-```
+```php
 <?php
 
 public function registerBundles()
@@ -17,7 +17,7 @@ public function registerBundles()
 Configuration
 -------------
 
-```
+```yaml
 # app/config/config.yml
 doctrine:
     orm:
