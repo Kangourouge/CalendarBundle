@@ -2,32 +2,21 @@
 
 namespace KRG\CalendarBundle\Calendar;
 
-use AppBundle\Doctrine\DBAL\GenderEnum;
-use KRG\CalendarBundle\Entity\AppointmentInterface;
+use KRG\UserBundle\Doctrine\DBAL\GenderEnum;
 use KRG\CalendarBundle\Entity\SlotInterface;
+use KRG\CalendarBundle\Entity\AppointmentInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class Calendar
 {
-    /**
-     * @var CalendarManager
-     */
+    /** @var CalendarManager */
     private $manager;
 
-    /**
-     * Calendar constructor.
-     *
-     * @param CalendarManager $manager
-     */
     public function __construct(CalendarManager $manager)
     {
         $this->manager = $manager;
     }
 
-    /**
-     * @param array $slots
-     * @param array $appointments
-     */
     protected function prepare(array $slots, array $appointments)
     {
         /* @var $slot SlotInterface */
@@ -51,21 +40,11 @@ class Calendar
         }
     }
 
-    /**
-     * @param array              $filter
-     * @param UserInterface|null $user
-     * @return array
-     */
     public function getSlots(array $filter, UserInterface $user = null)
     {
         return $this->manager->getSlots($filter, $user);
     }
 
-    /**
-     * @param array              $filter
-     * @param UserInterface|null $user
-     * @return array
-     */
     public function getAppointments(array $filter, UserInterface $user = null)
     {
         return $this->manager->getAppointments($filter, $user);
@@ -73,18 +52,12 @@ class Calendar
 
     /**
      * Browse each slot, make a sample from range and apply it to the events array
-     * @param array $slots
-     * @param array $appointments
-     * @param bool  $firstResult
-     * @param bool  $full
-     * @param array $options
-     * @return array|Event|null
      */
-    public function getEvents(array $slots, array $appointments, $firstResult = false, $full = false, array $options = array())
+    public function getEvents(array $slots, array $appointments, $firstResult = false, $full = false, array $options = [])
     {
         $this->prepare($slots, $appointments);
 
-        $events = array();
+        $events = [];
 
         /* @var $slot SlotInterface */
         foreach ($slots as $slot) {
@@ -94,7 +67,6 @@ class Calendar
             }
 
             $periods = $this->getSlotPeriods($slot);
-
             foreach ($periods as $period) {
                 list($startAt, $endAt) = $period;
                 if (($event = $this->createEvent($slot, $startAt, $endAt, $events, $slots, $full, $options)) !== null) {
@@ -113,11 +85,6 @@ class Calendar
         return $events;
     }
 
-    /**
-     * @param SlotInterface $slot
-     * @return array
-     * @throws \Exception
-     */
     public function getSlotPeriods(SlotInterface $slot)
     {
         $week = $slot->getWeek();
@@ -126,14 +93,14 @@ class Calendar
         $endAt = clone $slot->getEndAt();
 
         $period = new \DatePeriod(max(new \DateTime(), $slot->getStartAt()), $interval, $endAt);
-        $periods = array();
+        $periods = [];
         if (count($week) === 0) {
             foreach ($period as $datetime) {
                 $startAt = clone $datetime;
                 $endAt = clone $datetime;
                 $endAt->add($interval);
 
-                $periods[] = array($startAt, $endAt);
+                $periods[] = [$startAt, $endAt];
             }
         } else {
             // Browse day by day the period
@@ -150,7 +117,7 @@ class Calendar
                         $endAt = clone $datetime;
                         $endAt->setTime($data[1]->format('H'), $data[1]->format('i'));
 
-                        $periods[] = array($startAt, $endAt);
+                        $periods[] = [$startAt, $endAt];
                     }
                 }
             }
@@ -159,14 +126,7 @@ class Calendar
         return $periods;
     }
 
-    /**
-     * @param array              $filter
-     * @param UserInterface|null $user
-     * @param bool               $full
-     * @param array              $options
-     * @return array|Event|null
-     */
-    public function findEvents(array $filter, UserInterface $user = null, $full = false, array $options = array())
+    public function findEvents(array $filter, UserInterface $user = null, $full = false, array $options = [])
     {
         return $this->getEvents($this->getSlots($filter, $user), $this->getAppointments($filter, $user), false, $full, $options);
     }
@@ -176,17 +136,7 @@ class Calendar
         return $this->getEvents($this->getSlots($filter, $user), $this->getAppointments($filter, $user), true);
     }
 
-    /**
-     * @param SlotInterface $slot
-     * @param \DateTime     $startAt
-     * @param \DateTime     $endAt
-     * @param array         $events
-     * @param array         $slots
-     * @param bool          $full
-     * @param array         $options
-     * @return Event|null
-     */
-    protected function createEvent(SlotInterface $slot, \DateTime $startAt, \DateTime $endAt, array $events, array $slots, $full = false, array $options = array())
+    protected function createEvent(SlotInterface $slot, \DateTime $startAt, \DateTime $endAt, array $events, array $slots, $full = false, array $options = [])
     {
         if (!$this->isValid($startAt, $endAt, $events, $slots)) {
             return null;
@@ -206,13 +156,6 @@ class Calendar
         return $event;
     }
 
-    /**
-     * @param \DateTime $startAt
-     * @param \DateTime $endAt
-     * @param array     $events
-     * @param array     $slots
-     * @return bool
-     */
     protected function isValid(\DateTime $startAt, \DateTime $endAt, array $events, array $slots)
     {
         // If it's today's slot, filter by time > now()
@@ -239,14 +182,7 @@ class Calendar
         return true;
     }
 
-    /**
-     * @param SlotInterface $slot
-     * @param \DateTime     $startAt
-     * @param \DateTime     $endAt
-     * @param array         $options
-     * @return bool
-     */
-    protected function isFull(SlotInterface $slot, \DateTime $startAt, \DateTime $endAt, array $options = array())
+    protected function isFull(SlotInterface $slot, \DateTime $startAt, \DateTime $endAt, array $options = [])
     {
         return !$slot->isValid($startAt, $endAt);
     }

@@ -11,32 +11,17 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class CalendarManager
 {
-    /**
-     * @var EntityManager
-     */
+    /** @var EntityManager */
     protected $entityManager;
 
-    /**
-     * @var FormInterface
-     */
+    /** @var FormInterface */
     protected $form;
 
-    /**
-     * CalendarManager constructor.
-     * @param EntityManager $entityManager
-     * @param FormInterface $form
-     */
     public function __construct(EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * @param array $filter
-     * @param UserInterface|null $user
-     *
-     * @return array
-     */
     public function getSlots(array $filter, UserInterface $user = null)
     {
         $className = $this->entityManager->getClassMetadata(SlotInterface::class)->getName();
@@ -48,12 +33,6 @@ class CalendarManager
         return $slotRepository->getQueryBuilder($filter, $user)->getQuery()->getResult();
     }
 
-    /**
-     * @param array $filter
-     * @param $user
-     *
-     * @return array
-     */
     public function getAppointments(array $filter, UserInterface $user = null)
     {
         $className = $this->entityManager->getClassMetadata(AppointmentInterface::class)->getName();

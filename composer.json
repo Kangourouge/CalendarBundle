@@ -1,9 +1,9 @@
 {
-  "name"       : "kangourouge/calendar-bundle",
-  "description": "Kangourouge calendar bundle",
-  "type"       : "symfony-bundle",
-  "license"    : "MIT",
-  "authors"    : [
+  "name"        : "kangourouge/calendar-bundle",
+  "description" : "Kangourouge calendar bundle",
+  "type"        : "symfony-bundle",
+  "license"     : "MIT",
+  "authors"     : [
     {
       "name" : "Chafiq El Mechrafi",
       "email": "chafiq.elmechrafi@gmail.com"
@@ -13,14 +13,21 @@
       "email": "aminiconi@kangourouge.com"
     }
   ],
-  "require"    : {
-    "php"            : ">=5.6",
-    "symfony/symfony": "2.8.*"
+  "require"     : {
+    "php"                     : "7.*",
+    "symfony/framework-bundle": "~3.0",
+    "kangourouge/user-bundle" : "1.*"
   },
-  "autoload"   : {
+  "autoload"    : {
     "psr-0": {
       "KRG\\CalendarBundle": ""
     }
   },
-  "target-dir" : "KRG/CalendarBundle"
+  "target-dir"  : "KRG/CalendarBundle",
+  "repositories": [
+    {
+      "type": "vcs",
+      "url" : "https://github.com/Kangourouge/UserBundle.git"
+    }
+  ]
 }

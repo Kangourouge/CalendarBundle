@@ -2,9 +2,6 @@
 
 namespace KRG\CalendarBundle\Model;
 
-use KRG\CalendarBundle\Calendar\Event;
-use KRG\CalendarBundle\Entity\AppointmentInterface;
-use KRG\CalendarBundle\Entity\Slot;
 use Symfony\Component\Form\FormView;
 
 class FreeSlotModel extends CalendarModel

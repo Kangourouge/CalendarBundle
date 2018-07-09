@@ -27,7 +27,7 @@
         <script type="text/javascript">
             (function () {
                 {% block calendar_javascript_content %}
-                    var calendar = document.getElementById("{{ calendar.id }}");
+                    var calendar = document.getElementById('{{ calendar.id }}');
 
                     {% block calendar_options %}
                         var options = {{ options|json_encode|raw }};
@@ -100,7 +100,7 @@
                             }
 
                             try {
-                                if (!confirm("Etes vous sûr de vouloir modifier ce RDV ?")) {
+                                if (!confirm('Êtes vous sûr de vouloir modifier ce RDV ?')) {
                                     throw new Error;
                                 }
 
@@ -118,7 +118,6 @@
                             } catch(e) {
                                 revert();
                             }
-
                         };
 
                         var onRender = function(event, element, view) {

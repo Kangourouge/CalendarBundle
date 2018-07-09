@@ -3,18 +3,11 @@
 namespace KRG\CalendarBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
-use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use GEGM\CommonBundle\Validator\Constraints as GEGMAssert;
 
-/**
- * Abstract Appointment Entity
- *
- * @ORM\MappedSuperclass
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- */
 abstract class Appointment implements AppointmentInterface
 {
     use TimestampableEntity;

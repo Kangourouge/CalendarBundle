@@ -12,44 +12,27 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class CalendarModel implements CalendarModelInterface
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $id;
 
-    /**
-     * @var Calendar
-     */
+    /** @var Calendar */
     protected $calendar;
 
-    /**
-     * @var Request
-     */
+    /** @var Request */
     protected $request;
 
-    /**
-     * @var RouterInterface
-     */
+    /** @var RouterInterface */
     protected $router;
 
-    /**
-     * @var FormView
-     */
+    /** @var FormView */
     protected $filter;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $events;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $colors;
 
-    /**
-     * CalendarModel constructor.
-     */
     public function __construct()
     {
         $this->id = sprintf('calendar_%s', uniqid());

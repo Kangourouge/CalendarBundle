@@ -9,9 +9,7 @@ AppKernel
 public function registerBundles()
 {
     $bundles = array(
-        // ...
         new KRG\CalendarBundle\KRGCalendarBundle()
-        // ...
     );
 }
 ```

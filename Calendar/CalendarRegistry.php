@@ -6,14 +6,10 @@ use Symfony\Component\DependencyInjection\Container;
 
 class CalendarRegistry
 {
-    /**
-     * @var Container
-     */
+    /** @var Container */
     protected $container;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $calendars;
 
     function __construct(array $calendars)
@@ -21,9 +17,6 @@ class CalendarRegistry
         $this->calendars = $calendars;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get($name)
     {
         if (!$this->has($name)) {
@@ -47,9 +40,6 @@ class CalendarRegistry
         return $calendar;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function has($name)
     {
         return isset($this->calendars[$name]);

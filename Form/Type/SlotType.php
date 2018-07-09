@@ -2,25 +2,23 @@
 
 namespace KRG\CalendarBundle\Form\Type;
 
-use Doctrine\ORM\EntityManagerInterface;
 use KRG\CalendarBundle\Entity\Slot;
 use KRG\CalendarBundle\Entity\SlotInterface;
 use KRG\CalendarBundle\Form\DataTransformer\SlotRangeDataTransformer;
+use Doctrine\ORM\EntityManagerInterface;
 use Sonata\CoreBundle\Form\Type\DatePickerType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class SlotType extends AbstractType
 {
-    /**
-     * @var EntityManagerInterface
-     */
+    /** @var EntityManagerInterface */
     protected $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
@@ -31,51 +29,51 @@ class SlotType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('startAt', DatePickerType::class, array(
+            ->add('startAt', DatePickerType::class, [
                 'required' => true,
                 'widget'   => 'single_text',
                 'format'   => 'dd/MM/yyyy',
-                'attr'     => array(
+                'attr'     => [
                     'data-date-format' => 'DD/MM/YYYY',
                     'class'            => 'datepicker',
-                ),
-            ))
-            ->add('endAt', DatePickerType::class, array(
+                ],
+            ])
+            ->add('endAt', DatePickerType::class, [
                 'required' => true,
                 'widget'   => 'single_text',
                 'format'   => 'dd/MM/yyyy',
-                'attr'     => array(
+                'attr'     => [
                     'data-date-format' => 'DD/MM/YYYY',
                     'class'            => 'datepicker',
-                ),
-            ))
-            ->add('range', SlotRangeCollectionType::class, array(
+                ],
+            ])
+            ->add('range', SlotRangeCollectionType::class, [
                 'entry_type' => SlotRangeType::class,
                 'mapped'     => false,
                 'label'      => false
-            ))
-            ->add('duration', ChoiceType::class, array(
+            ])
+            ->add('duration', ChoiceType::class, [
                 'required' => true,
                 'choices'  => static::getDurationChoices(new \DateInterval($options['duration_interval']), new \DateInterval($options['duration_max_interval']))
-            ))
+            ])
             ->add('capacity', IntegerType::class)
         ;
 
-        $builder->addEventListener(FormEvents::POST_SET_DATA, array($this, 'onPostSetData'));
-        $builder->addEventListener(FormEvents::POST_SUBMIT, array($this, 'onPostSubmit'));
+        $builder->addEventListener(FormEvents::POST_SET_DATA, [$this, 'onPostSetData']);
+        $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'onPostSubmit']);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $className = $this->entityManager->getClassMetadata(SlotInterface::class)->getName();
 
-        $resolver->setDefaults(array(
-            'data_class'        => $className,
-            'label_format'      => 'form.slot.%name%',
-            'duration_interval' => 'PT15M',
+        $resolver->setDefaults([
+            'data_class'            => $className,
+            'label_format'          => 'form.slot.%name%',
+            'duration_interval'     => 'PT15M',
             'duration_max_interval' => 'PT2H',
-            'cascade_validation'=> true,
-        ));
+            'cascade_validation'    => true,
+        ]);
     }
 
     public function onPostSetData(FormEvent $event)
@@ -100,20 +98,24 @@ class SlotType extends AbstractType
         $event->setData($slot);
     }
 
-    protected static function getDurationChoices(\DateInterval $interval, \DateInterval $maxInterval) {
+    protected static function getDurationChoices(\DateInterval $interval, \DateInterval $maxInterval)
+    {
         $startAt = new \DateTime();
         $endAt = clone $startAt;
-
         $endAt->add($maxInterval);
-
         $period = new \DatePeriod($startAt, $interval, $endAt);
 
         $choices = [];
-
         foreach($period as $idx => $datetime) {
-
             $diff = $startAt->diff($datetime);
-            $intervals = ['y' => ['%dY', '%d year(s)'], 'm' => ['%dM' => '%d month(s)'], 'd' => ['%dD', '%d day(s)'], 'h' => ['T%dH', '%dh'], 'i' => ['T%dM', '%d min'], 's' => ['T%dS', '%ds']];
+            $intervals = [
+                'y' => ['%dY', '%d year(s)'],
+                'm' => ['%dM' => '%d month(s)'],
+                'd' => ['%dD', '%d day(s)'],
+                'h' => ['T%dH', '%dh'],
+                'i' => ['T%dM', '%d min'],
+                's' => ['T%dS', '%ds'],
+            ];
 
             $choice = $label = '';
             foreach($intervals as $key => $value) {
@@ -137,12 +139,12 @@ class SlotType extends AbstractType
 
     private function getRange(Slot $slot = null)
     {
-        $data = array();
+        $data = [];
         foreach (range(1, 7) as $day) {
-            $data[$day] = array(
-                'am' => array('day' => $day, 'meridiem' => 'am', 'start' => null, 'end' => null),
-                'pm' => array('day' => $day, 'meridiem' => 'pm', 'start' => null, 'end' => null),
-            );
+            $data[$day] = [
+                'am' => ['day' => $day, 'meridiem' => 'am', 'start' => null, 'end' => null],
+                'pm' => ['day' => $day, 'meridiem' => 'pm', 'start' => null, 'end' => null],
+            ];
         }
 
         $range = $slot !== null && $slot->getRange() ? array_replace_recursive($data, $slot->getRange()) : $data;
@@ -152,17 +154,17 @@ class SlotType extends AbstractType
         return $range;
     }
 
-    private function setRange(Slot $slot, array $data)
+    private function setRange(SlotInterface $slot, array $data)
     {
-        $range = array();
+        $range = [];
         foreach ($data as $_data) {
             $day = $_data['day'];
             $meridiem = $_data['meridiem'];
             if (!isset($range[$day])) {
-                $range[$day] = array();
+                $range[$day] = [];
             }
             if (!isset($range[$day])) {
-                $range[$day][$meridiem] = array();
+                $range[$day][$meridiem] = [];
             }
             unset($_data['day']);
             unset($_data['meridiem']);

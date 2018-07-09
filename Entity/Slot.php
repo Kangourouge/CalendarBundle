@@ -2,20 +2,13 @@
 
 namespace KRG\CalendarBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Abstract Slot Entity
- *
- * @ORM\MappedSuperclass
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- */
 abstract class Slot implements SlotInterface
 {
     use TimestampableEntity;
@@ -76,7 +69,7 @@ abstract class Slot implements SlotInterface
      */
     public function __construct()
     {
-        $this->range = array();
+        $this->range = [];
         $this->duration = 'PT30M';
         $this->capacity = 1;
         $this->excluded = false;
@@ -256,7 +249,7 @@ abstract class Slot implements SlotInterface
 
         $interval = new \DateInterval($this->duration);
 
-        $week = array();
+        $week = [];
         foreach ($this->range as $day => $data) {
             foreach ($data as $_data) {
                 if ($_data['start'] === null || $_data['end'] === null) {
@@ -289,14 +282,14 @@ abstract class Slot implements SlotInterface
     public function getPeriod(\DateTime $startAt, \DateTime $endAt, \DateInterval $interval) {
         $period = new \DatePeriod($startAt, $interval, $endAt);
 
-        $data = array();
+        $data = [];
         foreach ($period as $datetime) {
             $startAt = clone $datetime;
 
             $endAt = clone $datetime;
             $endAt->add($interval);
 
-            $data[] = array($startAt, $endAt);
+            $data[] = [$startAt, $endAt];
         }
 
         return $data;

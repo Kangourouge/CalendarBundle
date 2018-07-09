@@ -2,8 +2,8 @@
 
 namespace KRG\CalendarBundle\Form\Type;
 
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class SlotRangeCollectionType extends CollectionType
 {

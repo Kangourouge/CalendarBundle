@@ -7,67 +7,42 @@ use KRG\CalendarBundle\Entity\SlotInterface;
 /**
  * Class for holding a calendar event's details.
  */
-
 class Event
 {
-    /**
-     * @var mixed Unique identifier of this event (optional).
-     */
+    /** @var integer Unique identifier of this event (optional). */
     protected $id;
 
-    /**
-     * @var string Title/label of the calendar event.
-     */
+    /** @var string Title/label of the calendar event. */
     protected $title;
 
-    /**
-     * @var string URL Relative to current path.
-     */
+    /** @var string URL Relative to current path. */
     protected $url;
 
-    /**
-     * @var string HTML color code for the bg color of the event label.
-     */
+    /** @var string HTML color code for the bg color of the event label. */
     protected $bgColor;
 
-    /**
-     * @var string HTML color code for the foregorund color of the event label.
-     */
+    /** @var string HTML color code for the foregorund color of the event label. */
     protected $fgColor;
 
-    /**
-     * @var string css class for the event label
-     */
+    /** @var string css class for the event label */
     protected $cssClass;
 
-    /**
-     * @var \DateTime DateTime object of the event start date/time.
-     */
+    /** @var \DateTime DateTime object of the event start date/time. */
     protected $startAt;
 
-    /**
-     * @var \DateTime DateTime object of the event end date/time.
-     */
+    /** @var \DateTime DateTime object of the event end date/time. */
     protected $endAt;
 
-    /**
-     * @var boolean Is this an all day event?
-     */
+    /** @var boolean Is this an all day event? */
     protected $allDay = false;
 
-    /**
-     * @var array Non-standard fields
-     */
-    protected $otherFields = array();
+    /** @var array Non-standard fields */
+    protected $otherFields = [];
 
-    /**
-     * @var Slot
-     */
+    /** @var SlotInterface */
     protected $slot;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $available;
 
     public function __construct($title, \DateTime $startAt, \DateTime $endAt = null, $allDay = false)
@@ -78,20 +53,15 @@ class Event
         $this->available = true;
 
         if ($endAt === null && $this->allDay === false) {
-            throw new \InvalidArgumentException("Must specify an event End DateTime if not an all day event.");
+            throw new \InvalidArgumentException('Must specify an event End DateTime if not an all day event.');
         }
 
         $this->endAt = $endAt;
     }
 
-    /**
-     * Convert calendar event details to an array
-     *
-     * @return array $event
-     */
     public function toArray()
     {
-        $event = array();
+        $event = [];
 
         if ($this->id !== null) {
             $event['id'] = $this->id;
@@ -222,19 +192,11 @@ class Event
         return $this->allDay;
     }
 
-    /**
-     * @return boolean
-     */
     public function isAvailable()
     {
         return $this->available;
     }
 
-    /**
-     * @param $available
-     *
-     * @return Event
-     */
     public function setAvailable($available)
     {
         $this->available = $available;
@@ -242,10 +204,6 @@ class Event
         return $this;
     }
 
-    /**
-     * @param string $name
-     * @param string $value
-     */
     public function addField($name, $value)
     {
         $this->otherFields[$name] = $value;
@@ -253,9 +211,6 @@ class Event
         return $this;
     }
 
-    /**
-     * @param string $name
-     */
     public function removeField($name)
     {
         if (!array_key_exists($name, $this->otherFields)) {
@@ -265,17 +220,11 @@ class Event
         unset($this->otherFields[$name]);
     }
 
-    /**
-     * @return SlotInterface
-     */
     public function getSlot()
     {
         return $this->slot;
     }
 
-    /**
-     * @param SlotInterface $slot
-     */
     public function setSlot(SlotInterface $slot)
     {
         $this->slot = $slot;

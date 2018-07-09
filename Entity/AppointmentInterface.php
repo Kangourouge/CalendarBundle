@@ -68,7 +68,6 @@ interface AppointmentInterface
      */
     public function getNotifiedAt();
 
-
     /**
      * Set comment
      *

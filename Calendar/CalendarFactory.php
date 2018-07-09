@@ -5,55 +5,35 @@ namespace KRG\CalendarBundle\Calendar;
 use KRG\CalendarBundle\Model\CalendarModelInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 class CalendarFactory
 {
-    /**
-     * @var Calendar
-     */
+    /** @var Calendar */
     private $calendar;
 
-    /**
-     * @var CalendarRegistry
-     */
+    /** @var CalendarRegistry */
     private $registry;
 
-    /**
-     * @var FormFactory
-     */
+    /** @var FormFactory */
     private $formFactory;
 
-    /**
-     * @var Request
-     */
+    /** @var Request */
     private $request;
 
-    /**
-     * @var RouterInterface
-     */
+    /** @var RouterInterface */
     public $router;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $colors;
 
-    /**
-     * @var TokenStorage
-     */
+    /** @var TokenStorage */
     private $tokenStorage;
 
-    /**
-     * CalendarFactory constructor.
-     * @param CalendarManager $manager
-     * @param CalendarRegistry $registry
-     * @param FormFactory $formFactory
-     */
     public function __construct(Calendar $calendar, CalendarRegistry $registry, FormFactory $formFactory, RequestStack $requestStack, TokenStorage $tokenStorage, RouterInterface $router, array $colors)
     {
         $this->calendar = $calendar;
@@ -65,7 +45,7 @@ class CalendarFactory
         $this->tokenStorage = $tokenStorage;
     }
 
-    public function create($model, $filter = null, array $data = array())
+    public function create($model, $filter = null, array $data = [])
     {
         if (is_string($model)) {
             if (class_exists($model)) {
@@ -116,9 +96,6 @@ class CalendarFactory
         return $model;
     }
 
-    /**
-     * @return null|UserInterface
-     */
     private function getUser()
     {
         $user = $this->tokenStorage->getToken()->getUser();

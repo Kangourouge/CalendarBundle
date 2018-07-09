@@ -2,22 +2,14 @@
 
 namespace KRG\CalendarBundle\Calendar;
 
-use KRG\CalendarBundle\Entity\AppointmentInterface;
 use KRG\CalendarBundle\Model\ICal;
 use Symfony\Component\Templating\EngineInterface;
 
 class ICalGenerator
 {
-    /**
-     * @var EngineInterface
-     */
+    /** @var EngineInterface */
     protected $templating;
 
-    /**
-     * ICalGenerator constructor.
-     *
-     * @param EngineInterface $templating
-     */
     public function __construct(EngineInterface $templating)
     {
         $this->templating = $templating;

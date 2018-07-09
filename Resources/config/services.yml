@@ -1,37 +1,32 @@
 services:
-    krg.calendar.registry:
-        class: KRG\CalendarBundle\Calendar\CalendarRegistry
-        arguments: [[]]
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+        bind:
+            $colors: '%colors%'
 
-    krg.calendar.manager:
-        class: KRG\CalendarBundle\Calendar\CalendarManager
-        arguments: [ '@doctrine.orm.entity_manager' ]
+    KRG\CalendarBundle\Controller\:
+        resource: '../../Controller'
+        tags: ['controller.service_arguments']
+        public: true
 
-    krg.calendar:
-        class: KRG\CalendarBundle\Calendar\Calendar
-        arguments: [ '@krg.calendar.manager' ]
+    KRG\CalendarBundle\Listener\:
+        resource: '../../Entity/Listener/*'
+        tags: ['doctrine.event_subscriber']
+        public: true
 
-    krg.calendar.factory:
-        class: KRG\CalendarBundle\Calendar\CalendarFactory
-        arguments: [ '@krg.calendar', '@krg.calendar.registry', '@form.factory', '@request_stack', '@security.token_storage', '@router.default', '%colors%' ]
+    KRG\CalendarBundle\Listener\CalendarListener:
+        tags: [{ name: kernel.event_listener, event: kernel.view, priority: 255  }]
 
-    krg.calendar.twig:
-        class: KRG\CalendarBundle\Twig\CalendarExtension
-        tags:
-            - { name: twig.extension }
+    KRG\CalendarBundle\Form\Type\:
+        resource: '../../Form/Type/*'
+        tags: ['form.type']
 
-    krg.calendar.listener:
-        class: KRG\CalendarBundle\Calendar\CalendarListener
-        tags:
-            - { name: kernel.event_listener, event: kernel.view, priority: 255 }
+    KRG\CalendarBundle\Twig\:
+        resource: '../../Twig/*'
+        tags: ['twig.extension']
 
-    krg.form.slot:
-        class: KRG\CalendarBundle\Form\Type\SlotType
-        arguments: [ '@doctrine.orm.entity_manager' ]
-        tags:
-            - { name: form.type }
-
-    KRG\CalendarBundle\Calendar\ICalGenerator:
-        class: KRG\CalendarBundle\Calendar\ICalGenerator
-        arguments: [ '@templating' ]
-
+    KRG\CalendarBundle\Calendar\:
+        resource: '../../Entity/Calendar/*'
+        public: true

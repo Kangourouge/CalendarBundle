@@ -1,6 +1,6 @@
 <?php
 
-namespace KRG\CalendarBundle\Calendar;
+namespace KRG\CalendarBundle\Listener;
 
 use KRG\CalendarBundle\Model\CalendarModelInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,7 +21,7 @@ class CalendarListener
                 }, $result->getEvents());
                 $event->setResponse(new JsonResponse($events));
             } else {
-                $event->setControllerResult(array('calendar' => $result));
+                $event->setControllerResult(['calendar' => $result]);
             }
         }
     }

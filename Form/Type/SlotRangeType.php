@@ -3,15 +3,15 @@
 namespace KRG\CalendarBundle\Form\Type;
 
 use KRG\CalendarBundle\Form\DataTransformer\SlotRangeDataTransformer;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class SlotRangeType extends AbstractType
 {
@@ -30,7 +30,7 @@ class SlotRangeType extends AbstractType
 
         $day = ceil(((int)$view->vars['name'] + 1) / 2) % 7;
 
-        $view->vars['day'] = date('l', strtotime(sprintf("Sunday +%s days", $day)));
+        $view->vars['day'] = date('l', strtotime(sprintf('Sunday +%s days', $day)));
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -56,28 +56,26 @@ class SlotRangeType extends AbstractType
         $choices = self::getChoices($meridiem);
 
         $form
-            ->add('start', ChoiceType::class, array(
+            ->add('start', ChoiceType::class, [
                 'choices'           => $choices,
                 'choices_as_values' => true,
                 'required'          => false,
                 'label'             => false,
                 'placeholder'       => 'form.range.start',
-            ))
-            ->add('end', ChoiceType::class, array(
+            ])
+            ->add('end', ChoiceType::class, [
                 'choices'           => $choices,
                 'choices_as_values' => true,
                 'required'          => false,
                 'label'             => false,
                 'placeholder'       => 'form.range.end',
-            ));
+            ]);
     }
-
-    /* */
 
     private static function getChoices($meridiem)
     {
         $range = $meridiem === 'am' ? range(7, 13, 0.5) : range(13, 22, 0.5);
-        $choices = array();
+        $choices = [];
         foreach ($range as $time) {
             $hour = floor($time);
 

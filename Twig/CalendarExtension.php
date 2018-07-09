@@ -2,26 +2,13 @@
 
 namespace KRG\CalendarBundle\Twig;
 
-use KRG\CalendarBundle\Calendar\Event;
 use KRG\CalendarBundle\Model\CalendarModelInterface;
 
 class CalendarExtension extends \Twig_Extension
 {
-    protected $options = array();
+    protected $options = [];
 
-    /**
-     * Returns a list of functions to add to the existing list.
-     *
-     * @return array An array of functions
-     */
-    public function getFunctions()
-    {
-        return array(
-            new \Twig_SimpleFunction("calendar_render", array($this, "render"), array("is_safe" => array("html"), 'needs_environment' => true)),
-        );
-    }
-
-    public function render(\Twig_Environment $twig, CalendarModelInterface $calendar, array $options = array(), $template = null)
+    public function render(\Twig_Environment $twig, CalendarModelInterface $calendar, array $options = [], $template = null)
     {
         $this->options = $options;
 
@@ -33,10 +20,10 @@ class CalendarExtension extends \Twig_Extension
 
         $template = $template ?: 'KRGCalendarBundle:Default:calendar.html.twig';
 
-        return $twig->load($template)->render(array(
+        return $twig->load($template)->render([
             'calendar' => $calendar,
             'options'  => $this->options,
-        ));
+        ]);
     }
 
     private function addDefaultOption($key, $value)
@@ -44,5 +31,12 @@ class CalendarExtension extends \Twig_Extension
         $this->options[$key] = (array_key_exists($key, $this->options)) ? $this->options[$key] : $value;
 
         return $this->options;
+    }
+
+    public function getFunctions()
+    {
+        return [
+            new \Twig_SimpleFunction('calendar_render', [$this, 'render'], ['is_safe' => ['html'], 'needs_environment' => true]),
+        ];
     }
 }
