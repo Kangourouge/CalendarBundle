@@ -16,7 +16,7 @@
   "require"     : {
     "php"                     : "7.*",
     "symfony/framework-bundle": "~3.0",
-    "kangourouge/user-bundle" : "1.*"
+    "kangourouge/user-bundle" : "2.*"
   },
   "autoload"    : {
     "psr-0": {
