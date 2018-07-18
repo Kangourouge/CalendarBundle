@@ -9,7 +9,10 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-abstract class Slot implements SlotInterface
+/**
+ * @ORM\MappedSuperclass(repositoryClass="KRG\CalendarBundle\Repository\SlotRepository")
+ */
+class Slot implements SlotInterface
 {
     use TimestampableEntity;
     use SoftDeleteableEntity;
@@ -63,6 +66,11 @@ abstract class Slot implements SlotInterface
      * @var Collection
      */
     protected $appointments;
+
+    public function __toString()
+    {
+        return (string)$this->getId();
+    }
 
     /**
      * Slot constructor.

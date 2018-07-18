@@ -24,10 +24,11 @@ class CalendarManager
 
     public function getSlots(array $filter, UserInterface $user = null)
     {
-        $className = $this->entityManager->getClassMetadata(SlotInterface::class)->getName();
-        $slotRepository = $this->entityManager->getRepository($className);
+        $slotRepository = $this->entityManager->getRepository(SlotInterface::class);
+        dump(class_implements($slotRepository));
+
         if (!$slotRepository instanceof CalendarRepositoryInterface) {
-            throw new \RuntimeException('Slot Repository must be an instance of ' . CalendarRepositoryInterface::class);
+            throw new \RuntimeException('SlotRepository must be an instance of '.CalendarRepositoryInterface::class);
         }
 
         return $slotRepository->getQueryBuilder($filter, $user)->getQuery()->getResult();
@@ -35,10 +36,11 @@ class CalendarManager
 
     public function getAppointments(array $filter, UserInterface $user = null)
     {
-        $className = $this->entityManager->getClassMetadata(AppointmentInterface::class)->getName();
-        $appointmentRepository = $this->entityManager->getRepository($className);
+        $appointmentRepository = $this->entityManager->getRepository(AppointmentInterface::class);
+        dump(class_implements($appointmentRepository));
+
         if (!$appointmentRepository instanceof CalendarRepositoryInterface) {
-            throw new \RuntimeException('Appointment Repository must be an instance of '.CalendarRepositoryInterface::class);
+            throw new \RuntimeException('AppointmentRepository must be an instance of '.CalendarRepositoryInterface::class);
         }
 
         return $appointmentRepository->getQueryBuilder($filter, $user)->getQuery()->getResult();

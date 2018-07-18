@@ -14,6 +14,11 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->arrayNode('calendar')
+                    ->children()
+                    ->scalarNode('colors')->defaultValue([])->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;

@@ -2,11 +2,10 @@
 
 namespace KRG\CalendarBundle\Form\Type;
 
+use Doctrine\DBAL\Types\DateType;
 use KRG\CalendarBundle\Entity\Slot;
 use KRG\CalendarBundle\Entity\SlotInterface;
-use KRG\CalendarBundle\Form\DataTransformer\SlotRangeDataTransformer;
 use Doctrine\ORM\EntityManagerInterface;
-use Sonata\CoreBundle\Form\Type\DatePickerType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
@@ -14,7 +13,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class SlotType extends AbstractType
 {
@@ -29,7 +27,7 @@ class SlotType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('startAt', DatePickerType::class, [
+            ->add('startAt', DateType::class, [
                 'required' => true,
                 'widget'   => 'single_text',
                 'format'   => 'dd/MM/yyyy',
@@ -38,7 +36,7 @@ class SlotType extends AbstractType
                     'class'            => 'datepicker',
                 ],
             ])
-            ->add('endAt', DatePickerType::class, [
+            ->add('endAt', DateType::class, [
                 'required' => true,
                 'widget'   => 'single_text',
                 'format'   => 'dd/MM/yyyy',
@@ -174,7 +172,7 @@ class SlotType extends AbstractType
         $slot->setRange($range);
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'slot';
     }

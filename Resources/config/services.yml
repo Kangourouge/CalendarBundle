@@ -4,7 +4,7 @@ services:
         autoconfigure: true
         public: false
         bind:
-            $colors: '%colors%'
+            $colors: '%krg_calendar.colors%'
 
     KRG\CalendarBundle\Controller\:
         resource: '../../Controller'
@@ -12,7 +12,7 @@ services:
         public: true
 
     KRG\CalendarBundle\Listener\:
-        resource: '../../Entity/Listener/*'
+        resource: '../../Listener/*'
         tags: ['doctrine.event_subscriber']
         public: true
 
@@ -28,5 +28,6 @@ services:
         tags: ['twig.extension']
 
     KRG\CalendarBundle\Calendar\:
-        resource: '../../Entity/Calendar/*'
+        resource: '../../Calendar/*'
         public: true
+

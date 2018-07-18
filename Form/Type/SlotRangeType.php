@@ -2,7 +2,6 @@
 
 namespace KRG\CalendarBundle\Form\Type;
 
-use KRG\CalendarBundle\Form\DataTransformer\SlotRangeDataTransformer;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;

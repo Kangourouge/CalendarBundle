@@ -2,7 +2,6 @@
 
 namespace KRG\CalendarBundle\Model;
 
-use KRG\CalendarBundle\Calendar\Event;
 use KRG\CalendarBundle\Entity\Appointment;
 use KRG\CalendarBundle\Entity\AppointmentInterface;
 

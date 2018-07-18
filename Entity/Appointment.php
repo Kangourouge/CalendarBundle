@@ -6,9 +6,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-use GEGM\CommonBundle\Validator\Constraints as GEGMAssert;
 
-abstract class Appointment implements AppointmentInterface
+/**
+ * @ORM\MappedSuperclass(repositoryClass="KRG\CalendarBundle\Repository\AppointmentRepository")
+ */
+class Appointment implements AppointmentInterface
 {
     use TimestampableEntity;
     use SoftDeleteableEntity;
@@ -29,7 +31,6 @@ abstract class Appointment implements AppointmentInterface
 
     /**
      * @ORM\Column(type="datetime")
-     * @GEGMAssert\GreaterThan("startAt")
      * @var \DateTime
      */
     protected $endAt;

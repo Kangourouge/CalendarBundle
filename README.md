@@ -19,6 +19,11 @@ Configuration
 
 ```yaml
 # app/config/config.yml
+
+twig:
+    form_themes:
+        - 'KRGCalendarBundle:Form:slot_widget.html.twig'
+        
 doctrine:
     orm:
         resolve_target_entities:

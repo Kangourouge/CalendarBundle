@@ -1,6 +1,6 @@
 <?php
 
-namespace KRG\CalendarBundle\Calendar;
+namespace KRG\CalendarBundle\Model;
 
 use KRG\CalendarBundle\Entity\SlotInterface;
 

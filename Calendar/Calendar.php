@@ -2,7 +2,7 @@
 
 namespace KRG\CalendarBundle\Calendar;
 
-use KRG\UserBundle\Doctrine\DBAL\GenderEnum;
+use KRG\CalendarBundle\Model\Event;
 use KRG\CalendarBundle\Entity\SlotInterface;
 use KRG\CalendarBundle\Entity\AppointmentInterface;
 use Symfony\Component\Security\Core\User\UserInterface;

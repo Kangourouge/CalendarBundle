@@ -3,7 +3,6 @@
 namespace KRG\CalendarBundle\Model;
 
 use KRG\CalendarBundle\Calendar\Calendar;
-use KRG\CalendarBundle\Calendar\Event;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;

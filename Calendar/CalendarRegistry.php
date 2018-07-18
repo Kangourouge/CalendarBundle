@@ -12,7 +12,7 @@ class CalendarRegistry
     /** @var array */
     private $calendars;
 
-    function __construct(array $calendars)
+    function __construct(array $calendars = [])
     {
         $this->calendars = $calendars;
     }
