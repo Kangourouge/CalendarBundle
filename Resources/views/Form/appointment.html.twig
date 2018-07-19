@@ -1,38 +1,13 @@
 {% extends 'form_div_layout.html.twig' %}
 
-{% block choice_widget_collapsed %}
-    <div class="appointment-list">
-        <div class="row">
-            <div id="{{ form.vars.id }}_choices" class="col-xs-12">
-                <div class="col-xs-12">
-                    {% for group_label, group in choices %}
-                        {% if group.choices is defined %}
-                            <div id="{{ form.vars.id }}_{{ group.label }}_choices">
-                                <div class="col-xs-12">
-                                    <h5>{{ group_label }}</h5>
-
-                                    {% for key, choice in group.choices %}
-                                        <div class="checkbox">
-                                            {% set attr = choice.attr|merge({name:form.vars.full_name, type:'radio', value: choice.value, 'required':true }) %}
-                                            <input id="{{ form.vars.id }}_choice_{{ choice.value }}" {{ block('attributes') }} >
-                                            <label for="{{ form.vars.id }}_choice_{{ choice.value }}">{{ choice.label }}</label>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </div>
-{% endblock choice_widget_collapsed %}
-
 {% block appointment_widget %}
     {{ form_widget(form.children.event) }}
-    {{ form_widget(form.children.slot) }}
-    {{ form_widget(form.children.startAt) }}
-    {{ form_widget(form.children.endAt) }}
+
+    <div style="display: none;">
+        {{ form_widget(form.children.slot) }}
+        {{ form_widget(form.children.startAt) }}
+        {{ form_widget(form.children.endAt) }}
+    </div>
 
     <script type="text/javascript">
         (function () {

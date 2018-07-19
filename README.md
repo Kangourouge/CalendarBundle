@@ -22,7 +22,9 @@ Configuration
 
 twig:
     form_themes:
-        - 'KRGCalendarBundle:Form:slot_widget.html.twig'
+        - 'KRGCalendarBundle:Form:appointment.html.twig'
+        - 'KRGCalendarBundle:Form:event.html.twig'
+        - 'KRGCalendarBundle:Form:slot.html.twig'
         
 doctrine:
     orm:

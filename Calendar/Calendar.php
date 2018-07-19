@@ -17,39 +17,6 @@ class Calendar
         $this->manager = $manager;
     }
 
-    protected function prepare(array $slots, array $appointments)
-    {
-        /* @var $slot SlotInterface */
-        foreach ($slots as $slot) {
-            if (!$slot->getExcluded()) {
-                $slot->getAppointments()->clear();
-            }
-        }
-
-        /* @var $appointment AppointmentInterface */
-        foreach ($appointments as $appointment) {
-            foreach ($slots as $slot) {
-                if ($slot->getExcluded()) {
-                    continue;
-                }
-                if ($slot->contains($appointment->getStartAt(), $appointment->getEndAt())) {
-                    $slot->addAppointment($appointment);
-                    continue 2;
-                }
-            }
-        }
-    }
-
-    public function getSlots(array $filter, UserInterface $user = null)
-    {
-        return $this->manager->getSlots($filter, $user);
-    }
-
-    public function getAppointments(array $filter, UserInterface $user = null)
-    {
-        return $this->manager->getAppointments($filter, $user);
-    }
-
     /**
      * Browse each slot, make a sample from range and apply it to the events array
      */
@@ -66,7 +33,7 @@ class Calendar
                 continue;
             }
 
-            $periods = $this->getSlotPeriods($slot);
+            $periods = $this->getSlotPeriods($slot, $options);
             foreach ($periods as $period) {
                 list($startAt, $endAt) = $period;
                 if (($event = $this->createEvent($slot, $startAt, $endAt, $events, $slots, $full, $options)) !== null) {
@@ -85,7 +52,7 @@ class Calendar
         return $events;
     }
 
-    public function getSlotPeriods(SlotInterface $slot)
+    public function getSlotPeriods(SlotInterface $slot, array $options = [])
     {
         $week = $slot->getWeek();
 
@@ -104,6 +71,7 @@ class Calendar
             }
         } else {
             // Browse day by day the period
+            $i = 1;
             foreach ($period as $datetime) {
                 $dayNb = $datetime->format('w') % 7;
 
@@ -119,6 +87,13 @@ class Calendar
 
                         $periods[] = [$startAt, $endAt];
                     }
+
+                    // Limit number of days available
+                    if ($options['max_days'] && $i >= $options['max_days']) {
+                        break;
+                    }
+
+                    $i++;
                 }
             }
         }
@@ -185,5 +160,38 @@ class Calendar
     protected function isFull(SlotInterface $slot, \DateTime $startAt, \DateTime $endAt, array $options = [])
     {
         return !$slot->isValid($startAt, $endAt);
+    }
+
+    protected function prepare(array $slots, array $appointments)
+    {
+        /* @var $slot SlotInterface */
+        foreach ($slots as $slot) {
+            if (!$slot->getExcluded()) {
+                $slot->getAppointments()->clear();
+            }
+        }
+
+        /* @var $appointment AppointmentInterface */
+        foreach ($appointments as $appointment) {
+            foreach ($slots as $slot) {
+                if ($slot->getExcluded()) {
+                    continue;
+                }
+                if ($slot->contains($appointment->getStartAt(), $appointment->getEndAt())) {
+                    $slot->addAppointment($appointment);
+                    continue 2;
+                }
+            }
+        }
+    }
+
+    public function getSlots(array $filter, UserInterface $user = null)
+    {
+        return $this->manager->getSlots($filter, $user);
+    }
+
+    public function getAppointments(array $filter, UserInterface $user = null)
+    {
+        return $this->manager->getAppointments($filter, $user);
     }
 }
