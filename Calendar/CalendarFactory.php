@@ -75,6 +75,7 @@ class CalendarFactory
         $model->setColors($this->colors);
 
         $data = null;
+        $user = null;
         if ($this->request->isXmlHttpRequest()) {
             /* @var $user UserInterface */
             $user = $this->getUser();

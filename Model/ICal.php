@@ -3,7 +3,7 @@
 namespace KRG\CalendarBundle\Model;
 
 use KRG\CalendarBundle\Entity\AppointmentInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+
 
 class ICal
 {

@@ -2,7 +2,7 @@
 
 namespace KRG\CalendarBundle\Model;
 
-use Symfony\Component\Form\FormView;
+
 
 class FreeSlotModel extends CalendarModel
 {

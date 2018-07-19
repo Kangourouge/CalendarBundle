@@ -6,6 +6,7 @@ use KRG\CalendarBundle\Model\CalendarModelInterface;
 use KRG\CalendarBundle\Model\Event;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
+use Twig\Template;
 
 class CalendarListener
 {
