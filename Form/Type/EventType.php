@@ -2,13 +2,40 @@
 
 namespace KRG\CalendarBundle\Form\Type;
 
+use KRG\CalendarBundle\Entity\Appointment;
+use KRG\CalendarBundle\Model\Event;
 use Symfony\Component\Form\AbstractType;
 use KRG\CalendarBundle\Model\Event as CalendarEvent;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class EventType extends AbstractType
 {
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'onPreSetdata']);
+    }
+
+    public function onPreSetdata(FormEvent $event)
+    {
+        /** @var $appointment Appointment */
+        $appointment = $event->getData();
+        $form = $event->getForm();
+
+        if ($appointment) {
+            foreach ($form->getConfig()->getOption('choices') as $id => $choice) {
+                if ($choice->getStartAt()->format('U')=== $appointment->getStartAt()->format('U')
+                    && $choice->getEndAt()->format('U') === $appointment->getEndAt()->format('U')) {
+                    $event->setData((string)$id);
+                    break;
+                }
+            }
+        }
+    }
+
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

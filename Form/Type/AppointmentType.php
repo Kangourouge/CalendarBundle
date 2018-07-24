@@ -35,9 +35,12 @@ class AppointmentType extends AbstractType
             'max_days' => $options['max_days']
         ]);
 
+        dump($events);
+
         $builder
             ->add('event', EventType::class, [
                 'choices' => $events,
+                'data'    => $options['user']->getAppointment()
             ])
             ->add('slot', EntityType::class, [
                 'class' => Slot::class,
