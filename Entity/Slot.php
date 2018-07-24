@@ -151,6 +151,7 @@ class Slot implements SlotInterface
      */
     public function setEndAt(\DateTime $endAt)
     {
+        $endAt->setTime(23, 59, 59);
         $this->endAt = $endAt;
 
         return $this;

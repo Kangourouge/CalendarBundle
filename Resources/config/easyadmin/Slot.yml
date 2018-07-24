@@ -1,0 +1,31 @@
+easy_admin:
+    entities:
+        Slot:
+            class: 'KRG\CalendarBundle\Entity\SlotInterface'
+            list:
+                title: '<i class="fa fa-users"></i> Slots'
+                fields:
+                    -
+                        property: 'startAt'
+                    -
+                        property: 'endAt'
+                    -
+                        property: 'capacity'
+                    -
+                        property: 'excluded'
+            edit:
+                fields:
+                    - { type: 'group', label: 'slot.configuration' }
+                    -
+                        property: 'startAt'
+                    -
+                        property: 'endAt'
+                    -
+                        property: 'duration'
+                        type: 'KRG\CalendarBundle\Form\Type\DurationType'
+                    -
+                        property: 'capacity'
+                    - { type: 'group', label: 'slot.range' }
+                    -
+                        property: 'range'
+                        type: 'KRG\CalendarBundle\Form\Type\SlotRangeCollectionType'

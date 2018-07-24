@@ -1,0 +1,11 @@
+imports:
+    - { resource: easyadmin/ }
+
+easy_admin:
+    design:
+        menu:
+            -
+                label: 'Events'
+                priority: 1
+                children:
+                    - { entity: 'Slot', icon: 'calendar', label: 'Slots' }

@@ -2,10 +2,9 @@
 
 namespace KRG\CalendarBundle\Form\Type;
 
-use AppBundle\Entity\Appointment\Appointment;
-use AppBundle\Entity\Appointment\Slot;
-use AppBundle\Entity\User\User;
 use KRG\CalendarBundle\Calendar\Calendar;
+use KRG\CalendarBundle\Entity\AppointmentInterface;
+use KRG\CalendarBundle\Entity\SlotInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -15,6 +14,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class AppointmentType extends AbstractType
 {
@@ -41,7 +41,7 @@ class AppointmentType extends AbstractType
                 'data'    => $options['user']->getAppointment()
             ])
             ->add('slot', EntityType::class, [
-                'class' => Slot::class,
+                'class' => SlotInterface::class,
             ])
             ->add('startAt', HiddenType::class, [
                 'mapped' => false
@@ -65,7 +65,7 @@ class AppointmentType extends AbstractType
 
     public function onPostSubmit(FormEvent $event)
     {
-        /* @var $appointment Appointment */
+        /* @var $appointment AppointmentInterface */
         $appointment = $event->getData();
         $form = $event->getForm();
 
@@ -91,12 +91,13 @@ class AppointmentType extends AbstractType
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-           'data_class'      => Appointment::class,
-           'startAt'         => new \DateTime(),
-           'max_days'        => null
+           'data_class'         => AppointmentInterface::class,
+           'startAt'            => new \DateTime(),
+           'max_days'           => null,
+           'translation_domain' => 'KRGCalendarBundle',
         ]);
         $resolver->setRequired(['user']);
-        $resolver->setAllowedTypes('user', User::class);
+        $resolver->setAllowedTypes('user', UserInterface::class);
         $resolver->setAllowedTypes('startAt', \DateTime::class);
         $resolver->setAllowedTypes('max_days', ['integer', 'null']);
     }

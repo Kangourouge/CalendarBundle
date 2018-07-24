@@ -9,3 +9,10 @@ form:
         7: Sunday
         start: Start
         end: End
+
+    slot:
+        startAt: Start at
+        endAt: End at
+        duration: Duration
+        capacity: Capacity
+

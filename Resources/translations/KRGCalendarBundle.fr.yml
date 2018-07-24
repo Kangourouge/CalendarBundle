@@ -1,0 +1,25 @@
+form:
+    range:
+        1: Lundi
+        2: Mardi
+        3: Mercredi
+        4: Jeudi
+        5: Vendredi
+        6: Samedi
+        7: Dimanche
+        start: Début
+        end: Fin
+
+    slot:
+        startAt: Début
+        endAt: Fin
+        duration: Durée
+        capacity: Capacité
+
+Monday: Lundi
+Tuesday: Mardi
+Wednesday: Mercredi
+Thursday: Jeudi
+Friday: Vendredi
+Saturday: Samedi
+Sunday: Dimanche

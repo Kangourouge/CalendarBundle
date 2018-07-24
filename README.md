@@ -32,3 +32,16 @@ doctrine:
             KRG\CalendarBundle\Entity\SlotInterface: AppBundle\Entity\Slot
             KRG\CalendarBundle\Entity\AppointmentInterface: AppBundle\Entity\Appointment
 ```
+
+
+```yaml
+# app/config/admin.yml
+
+imports:
+    - { resource: '@KRGCalendarBundle/Resources/config/easyadmin.yml' }
+    
+easy_admin:
+    design:
+        css:
+            - '/bundles/krgcalendar/css/slot.css'
+```
