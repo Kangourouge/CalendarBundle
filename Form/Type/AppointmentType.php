@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use KRG\CalendarBundle\Calendar\Calendar;
 use KRG\CalendarBundle\Entity\AppointmentInterface;
 use KRG\CalendarBundle\Entity\SlotInterface;
+use KRG\CalendarBundle\Entity\UserAppointmentInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -105,7 +106,7 @@ class AppointmentType extends AbstractType
            'max_days'   => null,
         ]);
         $resolver->setRequired(['user']);
-        $resolver->setAllowedTypes('user', UserInterface::class);
+        $resolver->setAllowedTypes('user', UserAppointmentInterface::class);
         $resolver->setAllowedTypes('startAt', \DateTime::class);
         $resolver->setAllowedTypes('max_days', ['integer', 'null']);
     }
