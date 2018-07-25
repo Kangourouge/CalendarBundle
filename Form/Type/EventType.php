@@ -68,7 +68,6 @@ class EventType extends AbstractType
            'required'          => true,
            'mapped'            => false,
            'label'             => false,
-           'translation_domain' => 'KRGCalendarBundle',
         ]);
 
         $resolver->setRequired(['choices']);

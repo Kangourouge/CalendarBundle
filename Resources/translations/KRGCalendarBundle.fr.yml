@@ -10,12 +10,6 @@ form:
         start: Début
         end: Fin
 
-    slot:
-        startAt: Début
-        endAt: Fin
-        duration: Durée
-        capacity: Capacité
-
 Monday: Lundi
 Tuesday: Mardi
 Wednesday: Mercredi
@@ -23,3 +17,7 @@ Thursday: Jeudi
 Friday: Vendredi
 Saturday: Samedi
 Sunday: Dimanche
+
+slot:
+    configuration: Configuration
+    range: Créneaux

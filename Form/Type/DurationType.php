@@ -17,7 +17,6 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class DurationType extends AbstractType
 {
-
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -63,7 +62,7 @@ class DurationType extends AbstractType
                 continue;
             }
 
-            $choices['P'.$choice] = $label;
+            $choices[$label] = 'P'.$choice;
         }
 
         return $choices;

@@ -38,9 +38,8 @@ class SlotType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class'            => SlotInterface::class,
-            'label_format'          => 'form.slot.%name%',
+            'label_format'          => 'slot.%name%',
             'cascade_validation'    => true,
-            'translation_domain'    => 'KRGCalendarBundle',
         ]);
     }
 

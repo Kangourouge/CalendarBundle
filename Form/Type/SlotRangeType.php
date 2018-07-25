@@ -32,18 +32,6 @@ class SlotRangeType extends AbstractType
         $view->vars['day'] = date('l', strtotime(sprintf('Sunday +%s days', $day)));
     }
 
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-           'translation_domain' => 'KRGCalendarBundle',
-           'label_format'       => 'form.range.%name%',
-           'am_start'     => 7,
-           'am_end'       => 13,
-           'pm_start'     => 13,
-           'pm_end'       => 22,
-        ]);
-    }
-
     public function onPostSetData(FormEvent $event)
     {
         $form = $event->getForm();
@@ -61,14 +49,14 @@ class SlotRangeType extends AbstractType
                 'choices_as_values' => true,
                 'required'          => false,
                 'label'             => false,
-                'placeholder'       => 'form.range.start',
+                'placeholder'       => 'range.start',
             ])
             ->add('end', ChoiceType::class, [
                 'choices'           => $choices,
                 'choices_as_values' => true,
                 'required'          => false,
                 'label'             => false,
-                'placeholder'       => 'form.range.end',
+                'placeholder'       => 'range.end',
             ]);
     }
 
@@ -83,5 +71,16 @@ class SlotRangeType extends AbstractType
         }
 
         return array_combine($choices, $choices);
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'label_format'       => 'range.%name%',
+            'am_start'           => 7,
+            'am_end'             => 13,
+            'pm_start'           => 13,
+            'pm_end'             => 22,
+        ]);
     }
 }

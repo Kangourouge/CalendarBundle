@@ -5,27 +5,29 @@ easy_admin:
             list:
                 title: '<i class="fa fa-users"></i> Slots'
                 fields:
-                    -
-                        property: 'startAt'
-                    -
-                        property: 'endAt'
-                    -
-                        property: 'capacity'
-                    -
-                        property: 'excluded'
+                    - { property: 'startAt', label: 'slot.startAt', format: 'd/m/Y' }
+                    - { property: 'endAt', label: 'slot.endAt', format: 'd/m/Y' }
+                    - { property: 'capacity', label: 'slot.capacity' }
             edit:
                 fields:
                     - { type: 'group', label: 'slot.configuration' }
                     -
                         property: 'startAt'
+                        label: 'slot.startAt'
+                        type: 'date'
                     -
                         property: 'endAt'
+                        label: 'slot.endAt'
+                        type: 'date'
                     -
                         property: 'duration'
+                        label: 'slot.duration'
                         type: 'KRG\CalendarBundle\Form\Type\DurationType'
                     -
                         property: 'capacity'
+                        label: 'slot.capacity'
                     - { type: 'group', label: 'slot.range' }
                     -
                         property: 'range'
+                        label: false
                         type: 'KRG\CalendarBundle\Form\Type\SlotRangeCollectionType'
