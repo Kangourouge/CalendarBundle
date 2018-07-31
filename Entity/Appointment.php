@@ -57,6 +57,19 @@ class Appointment implements AppointmentInterface
      */
     protected $slot;
 
+    public function __toString()
+    {
+        if ($this->getStartAt() && $this->getEndAt()) {
+            return sprintf('%s : %s - %s',
+                $this->getStartAt()->format('d/m/Y'),
+                $this->getStartAt()->format('H:i'),
+                $this->getEndAt()->format('H:i')
+            );
+        }
+
+        return '';
+    }
+
     /**
      * Get id
      *
