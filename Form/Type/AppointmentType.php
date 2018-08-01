@@ -69,6 +69,8 @@ class AppointmentType extends AbstractType
             $view->vars['first_event'] = $choiceList[0];
             $view->vars['last_event'] = end($choiceList);
         }
+
+        $view->vars['past_appointment'] = $options['user']->getAppointment() && $options['user']->getAppointment()->getEndAt() < new \DateTime();
     }
 
     public function onPostSubmit(FormEvent $event)
