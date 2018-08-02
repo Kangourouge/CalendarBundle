@@ -43,13 +43,11 @@ class AppointmentType extends AbstractType
 
         $builder
             ->add('event', EventType::class, [
-                'choices' => $events,
-                'data'    => $options['user']->getAppointment()
+                'choices'  => $events,
+                'data'     => $options['user']->getAppointment(),
             ])
             ->add('slot', EntityType::class, [
-                'class' => $this->entityManager->getClassMetadata(SlotInterface::class)
-                                               ->getReflectionClass()
-                                               ->getName(),
+                'class' => $this->entityManager->getClassMetadata(SlotInterface::class)->getReflectionClass()->getName(),
             ])
             ->add('startAt', HiddenType::class, [
                 'mapped' => false
@@ -70,6 +68,7 @@ class AppointmentType extends AbstractType
             $view->vars['last_event'] = end($choiceList);
         }
 
+        $view->vars['required'] = $form->getConfig()->getOption('required');
         $view->vars['past_appointment'] = $options['user']->getAppointment() && $options['user']->getAppointment()->getEndAt() < new \DateTime();
     }
 
@@ -101,9 +100,7 @@ class AppointmentType extends AbstractType
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-           'data_class' => $this->entityManager->getClassMetadata(AppointmentInterface::class)
-                                               ->getReflectionClass()
-                                               ->getName(),
+           'data_class' => $this->entityManager->getClassMetadata(AppointmentInterface::class)->getReflectionClass()->getName(),
            'startAt'    => new \DateTime(),
            'max_days'   => null,
         ]);

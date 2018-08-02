@@ -1,6 +1,8 @@
 {% extends 'form_div_layout.html.twig' %}
 
 {% block event_widget %}
+    {% set required = form.parent.vars.required %}
+
     <div class="appointment-list"{{ block('attributes') }}>
         <div class="row">
             <div id="{{ form.vars.id }}_choices" class="col-xs-12">
@@ -13,7 +15,7 @@
 
                                     {% for key, choice in group.choices %}
                                         <div class="checkbox">
-                                            {% set attr = choice.attr|merge({name:form.vars.full_name, type:'radio', value: choice.value, 'required': true }) %}
+                                            {% set attr = choice.attr|merge({name:form.vars.full_name, type:'radio', value: choice.value, 'required': required }) %}
                                             {% set checked = false %}
                                             <input id="{{ form.vars.id }}_choice_{{ choice.value }}" {{ block('attributes') }}{% if choice.value == form.vars.data %} checked="checked"{% endif %}>
                                             <label for="{{ form.vars.id }}_choice_{{ choice.value }}">{{ choice.attr['timestamp']|date('H:i') }}</label>
