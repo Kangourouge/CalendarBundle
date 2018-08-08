@@ -21,3 +21,7 @@ Sunday: Dimanche
 slot:
     configuration: Configuration
     range: Créneaux
+
+event:
+    update:
+        confirm: Êtes-vous sûr de vouloir modifier ce RDV ?

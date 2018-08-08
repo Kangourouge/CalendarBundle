@@ -24,7 +24,6 @@ class Appointment implements AppointmentInterface
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\GreaterThan("today")
      * @var \DateTime
      */
     protected $startAt;

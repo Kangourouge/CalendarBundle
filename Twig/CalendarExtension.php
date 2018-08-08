@@ -15,6 +15,10 @@ class CalendarExtension extends \Twig_Extension
         // Default options
         $this->addDefaultOption('locale', 'fr');
         $this->addDefaultOption('timeFormat', 'H(:mm)');
+        $this->addDefaultOption('header', [
+            'center' => 'prev,next',
+            'right'  => 'agendaWeek,month'
+        ]);
 
         $this->options['events'] = $calendar->getRequest()->getPathInfo();
 

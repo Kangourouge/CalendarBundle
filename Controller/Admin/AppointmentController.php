@@ -20,10 +20,18 @@ class AppointmentController extends AdminController
     /** @var string */
     protected $calendarModel;
 
+    /** @var array */
+    protected $options;
+
+    /** @var string */
+    protected $template;
+
     public function __construct(CalendarFactory $calendarFactory)
     {
         $this->calendarFactory = $calendarFactory;
         $this->calendarModel = AppointmentModel::class;
+        $this->options = [];
+        $this->template = null;
     }
 
     /**
@@ -37,10 +45,21 @@ class AppointmentController extends AdminController
             return new JsonResponse($calendar->getEvents());
         }
 
-        return $this->render('@KRGCalendar/admin/appointment/show.html.twig',
-            [
-                'calendar' => $calendar,
-            ]);
+        return $this->render('@KRGCalendar/admin/appointment/show.html.twig', [
+            'calendar' => $calendar,
+            'options'  => $this->options,
+            'template' => $this->template,
+        ]);
+    }
+
+    public function setOptions(array $options)
+    {
+        $this->options = $options;
+    }
+
+    public function setTemplate(string $template)
+    {
+        $this->template = $template;
     }
 
     public function setCalendarModel(string $calendarModel)

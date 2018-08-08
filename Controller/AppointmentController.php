@@ -6,6 +6,7 @@ use KRG\CalendarBundle\Entity\AppointmentInterface;
 use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -19,6 +20,9 @@ class AppointmentController extends AbstractController
         $this->validator = $validator;
     }
 
+    /**
+     * @Route("/calendar/appointment/update/{id}", name="krg_calendar_appointment_update")
+     */
     public function updateAction(Request $request, $id)
     {
         $startAt = \DateTime::createFromFormat('Y-m-d\TH:i:s', $request->get('startAt'));

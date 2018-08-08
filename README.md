@@ -62,5 +62,7 @@ Define custom Calendar Model (event fetcher)
 # services.yml
 
 KRG\CalendarBundle\Controller\Admin\AppointmentController:
-    calls: [[ setCalendarModel, ['AppBundle\Calendar\AppointmentModel'] ]]
+    calls:
+        - [setCalendarModel, ['AppBundle\Calendar\Model\AppointmentModel']]
+        - [setOptions, [{ editable: true }]]
 ```

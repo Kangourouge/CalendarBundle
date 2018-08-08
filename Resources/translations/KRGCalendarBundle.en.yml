@@ -16,3 +16,6 @@ form:
         duration: Duration
         capacity: Capacity
 
+event:
+    update:
+        confirm: Do you really want to update this event?

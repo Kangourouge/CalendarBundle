@@ -82,15 +82,7 @@
                                     $(calendar).trigger('calendar.loading', [false]);
                                 });
                             };
-                            //options.events = {
-                            //    url: options.events,
-                            //    method: 'POST',
-                            //    data: function () {
-                            //        return $(filter).serializeJSON();
-                            //    }
-                            //};
                         {% endif %}
-
 
                         var onDropOrResize = function(event, delta, revert) {
                             if (typeof(event.updateUrl) !== "string") {
@@ -99,7 +91,7 @@
                             }
 
                             try {
-                                if (!confirm('Êtes vous sûr de vouloir modifier ce RDV ?')) {
+                                if (!confirm('{{ 'event.update.confirm'|trans({}, 'KRGCalendarBundle') }}')) {
                                     throw new Error;
                                 }
 
@@ -110,6 +102,10 @@
                                         endAt: event.end.format()
                                     },
                                     method: 'POST'
+                                })
+                                .done(function(events) {
+                                    callback(events);
+                                    $(calendar).trigger('calendar.toggle', [true]);
                                 })
                                 .fail(function(error) {
                                     revert();
