@@ -1,2 +1,7 @@
 rendez_vous: Rendez-vous
 rendez_vous_list: Liste des rendez-vous
+
+menu:
+  event: Événement
+  slot: Créneaux
+  calendar: Calendrier

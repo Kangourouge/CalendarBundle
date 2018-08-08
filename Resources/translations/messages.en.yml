@@ -9,8 +9,3 @@ slot:
 range:
   start: Start
   end: End
-
-menu:
-  event: Event
-  slot: Slot
-  calendar: Calendar

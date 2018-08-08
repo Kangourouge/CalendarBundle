@@ -1,2 +1,7 @@
 rendez_vous: Appointment
 rendez_vous_list: Appointment list
+
+menu:
+  event: Event
+  slot: Slot
+  calendar: Calendar

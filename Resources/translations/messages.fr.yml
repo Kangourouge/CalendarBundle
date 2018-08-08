@@ -9,8 +9,3 @@ slot:
 range:
   start: Début
   end: Fin
-
-menu:
-  event: Événement
-  slot: Créneaux
-  calendar: Calendrier
