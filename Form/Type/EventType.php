@@ -3,14 +3,13 @@
 namespace KRG\CalendarBundle\Form\Type;
 
 use KRG\CalendarBundle\Entity\Appointment;
-use KRG\CalendarBundle\Model\Event;
-use Symfony\Component\Form\AbstractType;
 use KRG\CalendarBundle\Model\Event as CalendarEvent;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class EventType extends AbstractType
 {

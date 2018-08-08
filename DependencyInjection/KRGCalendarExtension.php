@@ -6,8 +6,9 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 
-class KRGCalendarExtension extends Extension
+class KRGCalendarExtension extends Extension implements PrependExtensionInterface
 {
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -18,5 +19,16 @@ class KRGCalendarExtension extends Extension
         $loader->load('services.yml');
 
         $container->setParameter('krg_calendar.colors', $config['calendar']['colors'] ?? []);
+    }
+
+    public function prepend(ContainerBuilder $container)
+    {
+        $container->prependExtensionConfig('twig', [
+            'form_themes' => [
+                'KRGCalendarBundle:Form:appointment.html.twig',
+                'KRGCalendarBundle:Form:event.html.twig',
+                'KRGCalendarBundle:Form:range.html.twig',
+            ]
+        ]);
     }
 }

@@ -14,7 +14,6 @@
             <div class="bounce2"></div>
             <div class="bounce3"></div>
         </div>
-        <div class="calendar-warning">Veuillez renseigner les informations ci-dessus, pour voir les horaires disponibles.</div>
         <div id="modal" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -25,12 +24,13 @@
 
     {% block calendar_javascript %}
         <script type="text/javascript">
-            (function () {
+            $(document).ready(function () {
                 {% block calendar_javascript_content %}
                     var calendar = document.getElementById('{{ calendar.id }}');
 
                     {% block calendar_options %}
                         var options = {{ options|json_encode|raw }};
+
                         {% if calendar.filter %}
                             var filter = document.forms.{{ calendar.filter.vars.id }};
 
@@ -93,7 +93,6 @@
 
 
                         var onDropOrResize = function(event, delta, revert) {
-
                             if (typeof(event.updateUrl) !== "string") {
                                 revert();
                                 return;
@@ -130,8 +129,8 @@
                             }
 
                             if (event.isMissed || event.tag) {
-
                                 var icons = document.createElement('div');
+
                                 icons.className = 'fc-event-icons';
 
                                 if (event.isMissed) {
@@ -172,6 +171,7 @@
                                     $calendar.fullCalendar('refetchEvents');
                                 });
                             });
+
                             $(filter).on('submit', function (event) {
                                 event.preventDefault();
                                 return false;
@@ -179,7 +179,7 @@
                         {% endif %}
                     {% endblock %}
                 {% endblock %}
-            })();
+            });
         </script>
     {% endblock %}
 {% endblock %}

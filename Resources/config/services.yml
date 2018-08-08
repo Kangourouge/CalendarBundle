@@ -17,7 +17,11 @@ services:
         public: true
 
     KRG\CalendarBundle\Listener\CalendarListener:
-        tags: [{ name: kernel.event_listener, event: kernel.view, priority: 255  }]
+        tags: [{ name: kernel.event_listener, event: kernel.view, priority: 255 }]
+
+    KRG\CalendarBundle\Configuration\:
+        resource: '../../Configuration'
+        tags: ['easyadmin.config_pass']
 
     KRG\CalendarBundle\Form\Type\:
         resource: '../../Form/Type/*'

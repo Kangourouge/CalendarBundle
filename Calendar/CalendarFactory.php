@@ -34,7 +34,14 @@ class CalendarFactory
     /** @var TokenStorage */
     private $tokenStorage;
 
-    public function __construct(Calendar $calendar, CalendarRegistry $registry, FormFactory $formFactory, RequestStack $requestStack, TokenStorage $tokenStorage, RouterInterface $router, array $colors)
+    public function __construct(
+        Calendar $calendar,
+        CalendarRegistry $registry,
+        FormFactory $formFactory,
+        RequestStack $requestStack,
+        TokenStorage $tokenStorage,
+        RouterInterface $router,
+        array $colors)
     {
         $this->calendar = $calendar;
         $this->registry = $registry;
@@ -45,6 +52,9 @@ class CalendarFactory
         $this->tokenStorage = $tokenStorage;
     }
 
+    /**
+     * @return CalendarModelInterface
+     */
     public function create($model, $filter = null, array $data = [])
     {
         if (is_string($model)) {
@@ -80,12 +90,15 @@ class CalendarFactory
             /* @var $user UserInterface */
             $user = $this->getUser();
 
-            if ($filter !== null) {
-                $data['startAt'] = new \DateTime($this->request->get('start'));
-                $data['endAt'] = new \DateTime($this->request->get('end'));
+            $data['startAt'] = new \DateTime($this->request->get('start'));
+            $data['endAt'] = new \DateTime($this->request->get('end'));
 
-                if ($filter->isValid()) {
-                    $data = array_merge($filter->getData(), $data);
+            if ($filter !== null) {
+                if ($filter->isSubmitted() && $filter->isValid()) {
+                    $filterData = $filter->getData();
+                    if (is_array($filterData)) {
+                        $data = array_merge($filterData, $data);
+                    }
                 } else {
                     throw new \RuntimeException('Invalid form filter');
                 }

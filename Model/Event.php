@@ -7,7 +7,7 @@ use KRG\CalendarBundle\Entity\SlotInterface;
 /**
  * Class for holding a calendar event's details.
  */
-class Event
+class Event implements \JsonSerializable
 {
     /** @var integer Unique identifier of this event (optional). */
     protected $id;
@@ -98,6 +98,11 @@ class Event
         }
 
         return $event;
+    }
+
+    public function jsonSerialize()
+    {
+        return $this->toArray();
     }
 
     public function setId($id)

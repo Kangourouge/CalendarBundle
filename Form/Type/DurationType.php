@@ -2,18 +2,10 @@
 
 namespace KRG\CalendarBundle\Form\Type;
 
-use EasyCorp\Bundle\EasyAdminBundle\Form\Type\EasyAdminGroupType;
-use KRG\CalendarBundle\Entity\Slot;
-use KRG\CalendarBundle\Entity\SlotInterface;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class DurationType extends AbstractType
 {
