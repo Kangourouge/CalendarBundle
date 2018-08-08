@@ -5,7 +5,8 @@ easy_admin:
     design:
         menu:
             -
-                label: 'Events'
-                priority: 1
+                label: 'menu.event'
+                group: 'Calendar'
+                priority: 10
                 children:
-                    - { entity: 'Slot', icon: 'calendar', label: 'Slots' }
+                    - { entity: 'Slot', icon: 'calendar-o', label: 'menu.slot' }

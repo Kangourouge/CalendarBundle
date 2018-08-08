@@ -1,11 +1,16 @@
 slot:
-    configuration: Configuration
-    range: Créneaux
-    startAt: Début
-    endAt: Fin
-    duration: Durée
-    capacity: Capacité
+  configuration: Configuration
+  range: Créneaux
+  startAt: Début
+  endAt: Fin
+  duration: Durée
+  capacity: Capacité
 
 range:
-    start: Début
-    end: Fin
+  start: Début
+  end: Fin
+
+menu:
+  event: Événement
+  slot: Créneaux
+  calendar: Calendrier
