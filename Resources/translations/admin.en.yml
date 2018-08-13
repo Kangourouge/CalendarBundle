@@ -5,3 +5,16 @@ menu:
   event: Event
   slot: Slot
   calendar: Calendar
+
+slot:
+  configuration: Configuration
+  range: range
+  startAt: Start
+  endAt: End
+  duration: Duration
+  capacity: Capacity
+  timetable: Timetable
+
+range:
+  start: Start
+  end: End

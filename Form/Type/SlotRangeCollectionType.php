@@ -25,6 +25,10 @@ class SlotRangeCollectionType extends CollectionType
         $form = $event->getForm();
         $data = $event->getData();
 
+        if (count($data) === 0) {
+            $data = $this->getGenericData();
+        }
+
         foreach ($form->all() as $idx => $item) {
             $form->remove($idx);
         }
@@ -44,6 +48,14 @@ class SlotRangeCollectionType extends CollectionType
             }
             $day++;
         }
+    }
+
+    protected function getGenericData()
+    {
+        return array_fill(1, 7, [
+            'am' => ['start' => '09:00', 'end' => '12:00'],
+            'pm' => ['start' => '14:00', 'end' => '18:00'],
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

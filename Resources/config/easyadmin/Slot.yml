@@ -31,3 +31,26 @@ easy_admin:
                         property: 'range'
                         label: false
                         type: 'KRG\CalendarBundle\Form\Type\SlotRangeCollectionType'
+            new:
+                fields:
+                    - { type: 'group', label: 'slot.configuration' }
+                    -
+                        property: 'startAt'
+                        label: 'slot.startAt'
+                        type: 'date'
+                    -
+                        property: 'endAt'
+                        label: 'slot.endAt'
+                        type: 'date'
+                    -
+                        property: 'duration'
+                        label: 'slot.duration'
+                        type: 'KRG\CalendarBundle\Form\Type\DurationType'
+                    -
+                        property: 'capacity'
+                        label: 'slot.capacity'
+                    - { type: 'group', label: 'slot.range' }
+                    -
+                        property: 'range'
+                        label: 'slot.timetable'
+                        type: 'KRG\CalendarBundle\Form\Type\SlotRangeCollectionType'

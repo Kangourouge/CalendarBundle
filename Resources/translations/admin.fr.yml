@@ -5,3 +5,16 @@ menu:
   event: Événement
   slot: Créneaux
   calendar: Calendrier
+
+slot:
+  configuration: Configuration
+  range: Créneaux
+  startAt: Début
+  endAt: Fin
+  duration: Durée
+  capacity: Capacité
+  timetable: Horaires
+
+range:
+  start: Début
+  end: Fin
