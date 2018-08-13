@@ -62,11 +62,8 @@ class AppointmentType extends AbstractType
     {
         $choiceList = $form->get('event')->getConfig()->getOption('choices');
 
-        if (count($choiceList)) {
-            $view->vars['first_event'] = $choiceList[0];
-            $view->vars['last_event'] = end($choiceList);
-        }
-
+        $view->vars['first_event'] = count($choiceList) ? $choiceList[0] : null;
+        $view->vars['last_event'] = count($choiceList) ? end($choiceList) : null;
         $view->vars['required'] = $form->getConfig()->getOption('required');
         $view->vars['past_appointment'] = $options['user']->getAppointment() && $options['user']->getAppointment()->getEndAt() < new \DateTime();
     }
