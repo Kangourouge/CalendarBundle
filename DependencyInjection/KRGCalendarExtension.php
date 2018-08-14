@@ -25,9 +25,9 @@ class KRGCalendarExtension extends Extension implements PrependExtensionInterfac
     {
         $container->prependExtensionConfig('twig', [
             'form_themes' => [
-                'KRGCalendarBundle:Form:appointment.html.twig',
-                'KRGCalendarBundle:Form:event.html.twig',
-                'KRGCalendarBundle:Form:range.html.twig',
+                'KRGCalendarBundle:form:appointment.html.twig',
+                'KRGCalendarBundle:form:event.html.twig',
+                'KRGCalendarBundle:form:range.html.twig',
             ]
         ]);
     }
