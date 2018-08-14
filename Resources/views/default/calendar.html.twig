@@ -1,0 +1,181 @@
+{% block calendar %}
+    {% block calendar_filter %}
+        {% if calendar.filter %}
+            <div class="rdv-picker">
+                {{ form(calendar.filter) }}
+            </div>
+        {% endif %}
+    {% endblock %}
+
+    {% block calendar_content %}
+        <div id="{{ calendar.id }}" class="calendar"></div>
+        <div class="calendar-spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+        <div id="modal" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block calendar_javascript %}
+        <script type="text/javascript">
+            $(document).ready(function () {
+                {% block calendar_javascript_content %}
+                    var calendar = document.getElementById('{{ calendar.id }}');
+
+                    {% block calendar_options %}
+                        var options = {{ options|json_encode|raw }};
+
+                        {% if calendar.filter %}
+                            var filter = document.forms.{{ calendar.filter.vars.id }};
+
+                            var getFilter = function(filter, start, end) {
+                                var data = $(filter).serializeJSON(), element, i;
+
+                                for (i = 0; i < filter.elements.length; i++) {
+                                    element = filter.elements[i];
+
+                                    if (element && element.required && !data[element.name]) {
+                                        return null;
+                                    }
+                                }
+
+                                data.start = start.format('YYYY-MM-DD');
+                                data.end = end.format('YYYY-MM-DD');
+
+                                return data;
+                            };
+
+                            var url = options.events;
+
+                            options.events = function(start, end, timezone, callback) {
+                                $(calendar).trigger('calendar.reset');
+
+                                var data = getFilter(filter, start, end);
+
+                                if (data === null) {
+                                    $(calendar).trigger('calendar.toggle', [false]);
+                                    return;
+                                }
+
+                                $(calendar).trigger('calendar.loading', [true]);
+
+                                $.ajax({
+                                    url: url,
+                                    data: data,
+                                    method: 'POST'
+                                })
+                                .done(function(events) {
+                                    callback(events);
+                                    $(calendar).trigger('calendar.toggle', [true]);
+                                })
+                                .fail(function(error) {
+                                    callback([]);
+                                    $(calendar).trigger('calendar.toggle', [false]);
+                                })
+                                .always(function(){
+                                    $(calendar).trigger('calendar.loading', [false]);
+                                });
+                            };
+                        {% endif %}
+
+                        var onDropOrResize = function(event, delta, revert) {
+                            if (typeof(event.updateUrl) !== "string") {
+                                revert();
+                                return;
+                            }
+
+                            try {
+                                if (!confirm('{{ 'event.update.confirm'|trans({}, 'KRGCalendarBundle') }}')) {
+                                    throw new Error;
+                                }
+
+                                $.ajax({
+                                    url: event.updateUrl,
+                                    data: {
+                                        startAt: event.start.format(),
+                                        endAt: event.end.format()
+                                    },
+                                    method: 'POST'
+                                })
+                                .done(function(events) {
+                                    callback(events);
+                                    $(calendar).trigger('calendar.toggle', [true]);
+                                })
+                                .fail(function(error) {
+                                    revert();
+                                });
+                            } catch(e) {
+                                revert();
+                            }
+                        };
+
+                        var onRender = function(event, element, view) {
+                            if (event.showUrl) {
+                                element.attr({
+                                    'href' : event.showUrl,
+                                    'data-toggle' : 'modal',
+                                    'data-target' : '#modal'
+                                });
+                            }
+
+                            if (event.isMissed || event.tag) {
+                                var icons = document.createElement('div');
+
+                                icons.className = 'fc-event-icons';
+
+                                if (event.isMissed) {
+                                    element.addClass('fc-event-missed');
+                                    var flag = document.createElement('i');
+                                    flag.className = 'icon-report';
+                                    icons.appendChild(flag);
+                                }
+
+                                if (event.tag) {
+                                    element.addClass('fc-event-tagged');
+                                    var flag = document.createElement('i');
+                                    flag.className = 'icon-circle';
+                                    icons.appendChild(flag);
+                                }
+
+                                element.append(icons);
+                            }
+
+                            $(calendar).trigger('calendar.loading', [false]);
+                        };
+
+                        options.eventRender = onRender;
+                        options.eventDrop = onDropOrResize;
+                        options.eventResize = onDropOrResize;
+
+                        $('body').on('hidden.bs.modal', '.modal', function () {
+                            $(this).removeData('bs.modal');
+                        });
+                    {% endblock %}
+
+                    {% block calendar_init %}
+                        var $calendar = $(calendar).fullCalendar(options);
+
+                        {% if calendar.filter %}
+                            Array.prototype.forEach.call(filter.querySelectorAll('select, input'), function (form) {
+                                $(form).on('change', function (event) {
+                                    $calendar.fullCalendar('refetchEvents');
+                                });
+                            });
+
+                            $(filter).on('submit', function (event) {
+                                event.preventDefault();
+                                return false;
+                            });
+                        {% endif %}
+                    {% endblock %}
+                {% endblock %}
+            });
+        </script>
+    {% endblock %}
+{% endblock %}

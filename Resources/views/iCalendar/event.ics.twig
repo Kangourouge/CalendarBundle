@@ -1,0 +1,54 @@
+{% block VCALENDAR %}
+BEGIN:VCALENDAR
+{% block HEADER %}
+METHOD:REQUEST
+PRODID:KRG Message Bundle
+VERSION:2.0
+{% endblock %}
+{% block VTIMEZONE %}
+{% include '@KRGCalendarBundle/Resources/views/ICalendar/TimeZone/' ~ iCal.timezone.name ~ '.ics' %}
+{% endblock %}
+{% block VEVENT %}
+BEGIN:VEVENT
+{% block ORGANIZER %}
+{% for organizer in iCal.organizers %}
+ORGANIZER;CN="{{ iCal.organizer.name }}":MAILTO:{{ iCal.organizer.email }}
+{% endfor %}
+{% endblock %}
+{% block DESCRIPTION %}
+DESCRIPTION;LANGUAGE={{ iCal.locale }}:{{ iCal.description }}
+{% endblock %}
+{% block SUMMARY %}
+SUMMARY;LANGUAGE={{ iCal.locale }}:{{ iCal.title }}
+{% endblock %}
+DTSTART;TZID={{ iCal.timezone.name }}:{{ iCal.startAt|date('Ymd\\THis') }}
+DTEND;TZID={{ iCal.timezone.name }}:{{ iCal.endAt|date('Ymd\\THis') }}
+UID:{{ iCal.uid }}
+CLASS:PUBLIC
+PRIORITY:5
+DTSTAMP:{{ date()|date('Ymd\THisZ') }}
+TRANSP:OPAQUE
+STATUS:CONFIRMED
+SEQUENCE:3
+{% block LOCATION %}
+LOCATION;LANGUAGE={{ iCal.locale }}:{{ iCal.location }}
+{% endblock %}
+X-MICROSOFT-CDO-APPT-SEQUENCE:3
+X-MICROSOFT-CDO-OWNERAPPTID:-700573726
+X-MICROSOFT-CDO-BUSYSTATUS:TENTATIVE
+X-MICROSOFT-CDO-INTENDEDSTATUS:BUSY
+X-MICROSOFT-CDO-ALLDAYEVENT:FALSE
+X-MICROSOFT-CDO-IMPORTANCE:1
+X-MICROSOFT-CDO-INSTTYPE:0
+X-MICROSOFT-DISALLOW-COUNTER:FALSE
+{% block VALARM %}
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:REMINDER
+TRIGGER;RELATED=START:-PT15M
+END:VALARM
+{% endblock %}
+END:VEVENT
+{% endblock %}
+END:VCALENDAR
+{% endblock %}
