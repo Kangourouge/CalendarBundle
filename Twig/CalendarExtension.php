@@ -22,7 +22,7 @@ class CalendarExtension extends \Twig_Extension
 
         $this->options['events'] = $calendar->getRequest()->getPathInfo();
 
-        $template = $template ?: 'KRGCalendarBundle:Default:calendar.html.twig';
+        $template = $template ?: 'KRGCalendarBundle:default:calendar.html.twig';
 
         return $twig->load($template)->render([
             'calendar' => $calendar,
