@@ -4,54 +4,32 @@ namespace KRG\CalendarBundle\Model;
 
 use KRG\CalendarBundle\Entity\AppointmentInterface;
 
-
 class ICal
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $uid;
 
-    /**
-     * @var AppointmentInterface
-     */
+    /** @var AppointmentInterface */
     protected $appointment;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $title;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $description;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $locale;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $location;
 
-    /**
-     * @var \DateTimeZone
-     */
+    /** @var \DateTimeZone */
     protected $timezone;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $organizers;
 
-    /**
-     * ICal constructor.
-     *
-     * @param AppointmentInterface $appointment
-     */
     public function __construct(AppointmentInterface $appointment)
     {
         $this->uid = sprintf('%s-%s', $appointment->getId(), $appointment->getCreatedAt()->format('YmdHisOT'));
@@ -73,47 +51,28 @@ class ICal
         throw new \BadMethodCallException();
     }
 
-    /**
-     * @return string
-     */
     public function getUid(): string
     {
         return $this->uid;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @param string $title
-     *
-     * @return ICal
-     */
-    public function setTitle(string $title): ICal
+    public function setTitle(string $title)
     {
         $this->title = $title;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * @param string $description
-     *
-     * @return ICal
-     */
     public function setDescription(string $description): ICal
     {
         $this->description = $description;
@@ -121,35 +80,23 @@ class ICal
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getLocation(): string
     {
         return $this->location;
     }
 
-    /**
-     * @param string $location
-     */
     public function setLocation(string $location)
     {
         $this->location = $location;
+
+        return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getLocale(): string
     {
         return $this->locale;
     }
 
-    /**
-     * @param string $locale
-     *
-     * @return ICal
-     */
     public function setLocale(string $locale): ICal
     {
         $this->locale = $locale;
@@ -157,36 +104,23 @@ class ICal
         return $this;
     }
 
-    /**
-     * @return AppointmentInterface
-     */
     public function getAppointment(): AppointmentInterface
     {
         return $this->appointment;
     }
 
-    /**
-     * @param AppointmentInterface $appointment
-     */
     public function setAppointment(AppointmentInterface $appointment)
     {
         $this->appointment = $appointment;
+
+        return $this;
     }
 
-    /**
-     * @return array
-     */
     public function getOrganizers(): array
     {
         return $this->organizers;
     }
 
-    /**
-     * @param string $name
-     * @param string $email
-     *
-     * @return ICal
-     */
     public function addOrganizer(string $name, string $email): ICal
     {
         $this->organizers[] = ['name' => $name, 'email' => $email];
@@ -194,20 +128,24 @@ class ICal
         return $this;
     }
 
-    /**
-     * @return \DateTimeZone
-     */
+    public function setOrganizers(array $organizers)
+    {
+        foreach ($organizers as $organizer) {
+            $this->addOrganizer($organizer['name'], $organizer['email']);
+        }
+
+        return $this;
+    }
+
     public function getTimezone(): \DateTimeZone
     {
         return $this->timezone;
     }
 
-    /**
-     * @param \DateTimeZone $timezone
-     */
     public function setTimezone(\DateTimeZone $timezone)
     {
         $this->timezone = $timezone;
-    }
 
+        return $this;
+    }
 }

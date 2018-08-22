@@ -12,7 +12,7 @@ VERSION:2.0
 BEGIN:VEVENT
 {% block ORGANIZER %}
 {% for organizer in iCal.organizers %}
-ORGANIZER;CN="{{ iCal.organizer.name }}":MAILTO:{{ iCal.organizer.email }}
+ORGANIZER;CN="{{ organizer.name }}":MAILTO:{{ organizer.email }}
 {% endfor %}
 {% endblock %}
 {% block DESCRIPTION %}
