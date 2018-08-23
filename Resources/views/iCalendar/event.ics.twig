@@ -6,7 +6,7 @@ PRODID:KRG Message Bundle
 VERSION:2.0
 {% endblock %}
 {% block VTIMEZONE %}
-{% include '@KRGCalendarBundle/Resources/views/ICalendar/TimeZone/' ~ iCal.timezone.name ~ '.ics' %}
+{% include '@KRGCalendarBundle/Resources/views/iCalendar/TimeZone/' ~ iCal.timezone.name ~ '.ics' %}
 {% endblock %}
 {% block VEVENT %}
 BEGIN:VEVENT
