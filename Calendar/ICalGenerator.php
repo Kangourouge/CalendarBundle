@@ -35,7 +35,7 @@ class ICalGenerator
         return $iCal;
     }
 
-    public function getAttachment(ICal $iCal, string $filename, string $template = 'KRGCalendarBundle:ICalendar:event.ics.twig')
+    public function getAttachment(ICal $iCal, string $filename, string $template = 'KRGCalendarBundle:iCalendar:event.ics.twig')
     {
         $ics = \Swift_Attachment::fromPath($this->generate($iCal, $template));
         $ics->setFilename($filename);
@@ -43,7 +43,7 @@ class ICalGenerator
         return $ics;
     }
 
-    public function generate(ICal $iCal, string $template = 'KRGCalendarBundle:ICalendar:event.ics.twig') {
+    public function generate(ICal $iCal, string $template = 'KRGCalendarBundle:iCalendar:event.ics.twig') {
 
         $tempnam = tempnam(sys_get_temp_dir(), 'ical-');
 
