@@ -8,6 +8,7 @@ easy_admin:
             -
                 label: 'menu.event'
                 group: 'Calendar'
+                roles: ['ROLE_CALENDAR']
                 priority: 10
                 children:
                     - { entity: 'Slot', icon: 'calendar-o', label: 'menu.slot' }
