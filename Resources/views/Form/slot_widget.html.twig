@@ -28,20 +28,3 @@
         </div>
     {% endspaceless %}
 {% endblock slot_widget %}
-
-{% block range_collection_widget %}
-    {% spaceless %}
-        <div class="slot-range">
-            {% for child in form %}
-                <div class="slot">
-                    {% if loop.index % 2 == 1 %}
-                        <label>{{ child.vars.day }}</label>
-                    {% endif %}
-                    {% for _child in child %}
-                        {{- form_widget(_child) -}}
-                    {% endfor %}
-                </div>
-            {% endfor %}
-        </div>
-    {% endspaceless %}
-{% endblock range_collection_widget %}

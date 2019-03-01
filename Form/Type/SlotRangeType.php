@@ -17,45 +17,10 @@ class SlotRangeType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
+        $choices = self::getChoices($options['meridiem']);
+
         $builder
-            ->add('day', HiddenType::class)
-            ->add('meridiem', HiddenType::class);
-
-        $builder->addEventListener(FormEvents::POST_SET_DATA, array($this, 'onPostSetData'));
-    }
-
-    public function buildView(FormView $view, FormInterface $form, array $options)
-    {
-        parent::buildView($view, $form, $options);
-
-        $day = ceil(((int)$view->vars['name'] + 1) / 2) % 7;
-
-        $view->vars['day'] = date('l', strtotime(sprintf("Sunday +%s days", $day)));
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults(array(
-            'by_reference'       => false,
-            'translation_domain' => 'messages',
-            'label_format'       => 'form.range.%name%',
-        ));
-    }
-
-    public function getName()
-    {
-        return 'slot_range';
-    }
-
-    /* EVENTS */
-
-    public function onPostSetData(FormEvent $event)
-    {
-        $form = $event->getForm();
-        $meridiem = $form->get('meridiem')->getData();
-        $choices = self::getChoices($meridiem);
-
-        $form
             ->add('start', ChoiceType::class, array(
                 'choices'           => $choices,
                 'choices_as_values' => true,
@@ -72,7 +37,11 @@ class SlotRangeType extends AbstractType
             ));
     }
 
-    /* */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setRequired('meridiem');
+        $resolver->setAllowedValues('meridiem', ['am', 'pm']);
+    }
 
     private static function getChoices($meridiem)
     {

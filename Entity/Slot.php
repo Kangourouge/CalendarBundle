@@ -45,13 +45,13 @@ abstract class Slot implements SlotInterface
     protected $endAt;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $duration;
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\GreaterThan(0)
+     * @Assert\GreaterThanOrEqual(0)
      */
     protected $capacity;
 
@@ -250,12 +250,14 @@ abstract class Slot implements SlotInterface
             return $this->week;
         }
 
-        if ($this->duration === null || $this->range === null || count($this->range) === 0) {
-            return null;
+        if ($this->range === null || count($this->range) === 0) {
+            return [];
         }
 
-        $interval = new \DateInterval($this->duration);
-
+        $interval = null;
+        if ($this->duration !== null) {
+            $interval = new \DateInterval($this->duration);
+        }
         $week = array();
         foreach ($this->range as $day => $data) {
             foreach ($data as $_data) {
@@ -286,7 +288,11 @@ abstract class Slot implements SlotInterface
      *
      * @return array
      */
-    public function getPeriod(\DateTime $startAt, \DateTime $endAt, \DateInterval $interval) {
+    public function getPeriod(\DateTime $startAt, \DateTime $endAt, \DateInterval $interval = null) {
+        if ($interval === null) {
+            return [[$startAt, $endAt]];
+        }
+
         $period = new \DatePeriod($startAt, $interval, $endAt);
 
         $data = array();

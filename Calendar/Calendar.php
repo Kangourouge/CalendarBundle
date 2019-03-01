@@ -122,6 +122,10 @@ class Calendar
     {
         $week = $slot->getWeek();
 
+        if (count($week) === 0 && $slot->getDuration() === null) {
+            return array(array($slot->getStartAt(), $slot->getEndAt()));
+        }
+
         $interval = new \DateInterval($week === null ? sprintf('PT%dM', $slot->getDuration()) : 'P1D');
         $endAt = clone $slot->getEndAt();
 
